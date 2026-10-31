@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Môj Hudobný Prehrávač</title>
-    <link rel="stylesheet" href="style.css?v=20261101-3">
+    <link rel="stylesheet" href="style.css?v=20261101-4">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -73,7 +73,25 @@
     </aside>
     </div>
 
+
     <div class="playlist-backdrop" id="playlist-backdrop"></div>
-    <script src="script.js?v=20261101-3"></script>
+    <div class="skin-picker-backdrop" id="skin-picker-backdrop" hidden>
+      <section class="skin-picker" role="dialog" aria-modal="true" aria-labelledby="skin-picker-title">
+        <header class="skin-picker-header">
+          <div><p class="skin-picker-eyebrow">VZHĽAD PREHRÁVAČA</p><h2 id="skin-picker-title">Vyber si dizajn</h2>
+          <p class="skin-picker-subtitle">Farebná téma zostáva nezávislá od dizajnu.</p></div>
+          <button class="skin-picker-close" id="skin-picker-close" type="button" aria-label="Zavrieť"><i class="fas fa-times" aria-hidden="true"></i></button>
+        </header>
+        <div class="skin-options" id="skin-options">
+          <button class="skin-option" type="button" data-skin-choice="midnight-glass" aria-pressed="false"><span class="skin-preview preview-midnight"><span></span><i></i><b></b></span><span class="skin-option-copy"><strong>Midnight Glass</strong><small>Elegantný tmavý sklenený panel</small></span><i class="fas fa-check skin-option-check"></i></button>
+          <button class="skin-option" type="button" data-skin-choice="neon-cyber" aria-pressed="false"><span class="skin-preview preview-neon"><span></span><i></i><b></b></span><span class="skin-option-copy"><strong>Neon Cyber</strong><small>Ostré línie a neónový efekt</small></span><i class="fas fa-check skin-option-check"></i></button>
+          <button class="skin-option" type="button" data-skin-choice="vinyl-retro" aria-pressed="false"><span class="skin-preview preview-vinyl"><span></span><i></i><b></b></span><span class="skin-option-copy"><strong>Vinyl Retro</strong><small>Analógový vzhľad s rotujúcou platňou</small></span><i class="fas fa-check skin-option-check"></i></button>
+          <button class="skin-option" type="button" data-skin-choice="minimal-studio" aria-pressed="false"><span class="skin-preview preview-minimal"><span></span><i></i><b></b></span><span class="skin-option-copy"><strong>Minimal Studio</strong><small>Svetlý minimalistický štýl</small></span><i class="fas fa-check skin-option-check"></i></button>
+          <button class="skin-option" type="button" data-skin-choice="liquid-glass" aria-pressed="false"><span class="skin-preview preview-liquid"><span></span><i></i><b></b></span><span class="skin-option-copy"><strong>Liquid Glass</strong><small>Priehľadné vrstvy a jemné odlesky</small></span><i class="fas fa-check skin-option-check"></i></button>
+          <button class="skin-option" type="button" data-skin-choice="modern-dashboard" aria-pressed="false"><span class="skin-preview preview-dashboard"><span></span><i></i><b></b></span><span class="skin-option-copy"><strong>Modern Dashboard</strong><small>Rozhranie v štýle audio konzoly</small></span><i class="fas fa-check skin-option-check"></i></button>
+        </div>
+      </section>
+    </div>
+    <script src="script.js?v=20261101-4"></script>
 </body>
 </html>
