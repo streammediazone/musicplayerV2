@@ -330,3 +330,150 @@ body.playlist-open .player-container { border-top-right-radius: 0; border-bottom
 @media (prefers-reduced-motion: reduce) {
     .playlist-container, .playlist-backdrop { transition: none; }
 }
+
+
+/* Responzívne rozloženie – tablet */
+@media (min-width: 761px) and (max-width: 1023px) {
+    body {
+        padding: 24px 16px;
+    }
+
+    .player-container {
+        width: 320px;
+        padding: 24px;
+    }
+
+    .song-image {
+        width: min(272px, 100%);
+        height: auto;
+        aspect-ratio: 1;
+    }
+
+    .playlist-container {
+        width: clamp(280px, calc(100vw - 352px), 360px);
+        padding: 20px 16px 14px;
+    }
+}
+
+/* Responzívne rozloženie – mobil */
+@media (max-width: 760px) {
+    body {
+        min-height: 100vh;
+        min-height: 100dvh;
+        align-items: flex-start;
+        justify-content: center;
+        padding: max(16px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .player-shell {
+        display: block;
+        width: min(100%, 420px);
+        margin: 0 auto;
+    }
+
+    .player-container {
+        width: 100%;
+        padding: clamp(18px, 5vw, 26px);
+        border-radius: 15px;
+    }
+
+    .song-image {
+        width: min(300px, 78vw);
+        height: auto;
+        aspect-ratio: 1;
+        margin-bottom: 16px;
+    }
+
+    .player-container h2 {
+        font-size: clamp(1.35rem, 6vw, 1.8rem);
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+    }
+
+    .player-container h3 {
+        font-size: clamp(1rem, 4.5vw, 1.2rem);
+        margin-bottom: 20px;
+    }
+
+    .controls i {
+        margin: 0 clamp(10px, 4vw, 15px);
+    }
+
+    .playlist-container {
+        position: fixed;
+        top: 50%;
+        bottom: auto;
+        left: 50%;
+        width: min(420px, calc(100vw - 24px));
+        height: min( min(78dvh, 680px), calc(100dvh - 32px));
+        max-height: calc(100dvh - 32px);
+        padding: 18px 16px 12px;
+        border: 1px solid rgba(255,255,255,.13);
+        border-radius: 15px;
+        transform: translate(-50%, calc(-50% + 12px));
+        box-shadow: 0 18px 48px rgba(0,0,0,.42);
+    }
+
+    .playlist-container.show {
+        transform: translate(-50%, -50%);
+    }
+
+    .playlist-header {
+        margin-bottom: 14px;
+    }
+
+    .playlist-toolbar {
+        margin-top: 14px;
+    }
+
+    .playlist-list li {
+        min-height: 56px;
+    }
+
+    .playlist-close,
+    .favorites-filter,
+    .favorite-btn {
+        min-width: 40px;
+        min-height: 40px;
+    }
+
+    .favorite-btn {
+        width: 40px;
+        flex-basis: 40px;
+    }
+
+    #volume-slider {
+        min-width: 0;
+        touch-action: pan-y;
+    }
+
+    .progress-container {
+        min-height: 10px;
+        touch-action: pan-y;
+    }
+}
+
+/* Veľmi úzke telefóny */
+@media (max-width: 360px) {
+    .player-container {
+        padding: 16px;
+    }
+
+    .playlist-container {
+        padding: 15px 12px 10px;
+    }
+
+    .playlist-header h2 {
+        font-size: 1.35rem;
+    }
+
+    .playlist-search input {
+        font-size: .76rem;
+    }
+
+    .playlist-toolbar > span {
+        font-size: .58rem;
+    }
+}
