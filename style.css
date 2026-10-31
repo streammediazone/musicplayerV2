@@ -867,3 +867,69 @@ body {
  .skin-picker-header h2 { font-size:1.4rem; }
 }
 @media (prefers-reduced-motion:reduce) { .skin-option { transition:none; } }
+
+
+/* Oprava ovládacích tlačidiel: stav hover/focus sa vykresľuje iba na tlačidle,
+   nie súčasne na tlačidle aj na vnorenom Font Awesome symbole. */
+.playback-options .theme-toggle > i,
+.playback-options .skin-toggle > i {
+    display:block;
+    padding:0;
+    margin:0;
+    border:0;
+    border-radius:0;
+    background:transparent !important;
+    box-shadow:none !important;
+    pointer-events:none;
+}
+.playback-options .theme-toggle:focus-visible,
+.playback-options .skin-toggle:focus-visible {
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+    box-shadow:none;
+}
+.playback-options .theme-toggle:hover,
+.playback-options .skin-toggle:hover,
+.playback-options .theme-toggle:focus-visible,
+.playback-options .skin-toggle:focus-visible {
+    background:var(--accent-soft);
+}
+
+/* Rozšírená paleta – každá téma má vlastnú farebnú identitu. */
+:root[data-theme="arctic"] {
+    color-scheme:light;
+    --page-bg:#dce8f2; --surface:#f4f8fc; --surface-raised:#ffffff;
+    --text:#172b40; --muted:#62788d; --accent:#1678c8;
+    --accent-strong:#075ca5; --accent-soft:rgba(22,120,200,.14);
+    --track:rgba(23,55,83,.16); --panel-border:rgba(34,82,120,.17);
+}
+:root[data-theme="rose"] {
+    --page-bg:#1b0c18; --surface:#32152b; --surface-raised:#48203d;
+    --text:#fff1fa; --muted:#d7a9c8; --accent:#ff72b6;
+    --accent-strong:#e43e91; --accent-soft:rgba(255,114,182,.17);
+    --track:rgba(255,220,240,.16); --panel-border:rgba(255,150,205,.2);
+}
+:root[data-theme="solar"] {
+    --page-bg:#191407; --surface:#30250d; --surface-raised:#453514;
+    --text:#fff8df; --muted:#d9c58d; --accent:#ffd34e;
+    --accent-strong:#f0a900; --accent-soft:rgba(255,211,78,.18);
+    --track:rgba(255,245,210,.16); --panel-border:rgba(255,211,78,.2);
+}
+:root[data-theme="graphite"] {
+    --page-bg:#101316; --surface:#20262b; --surface-raised:#2b333a;
+    --text:#f2f4f5; --muted:#aab3ba; --accent:#c1cbd2;
+    --accent-strong:#87949e; --accent-soft:rgba(193,203,210,.16);
+    --track:rgba(255,255,255,.17); --panel-border:rgba(220,230,238,.15);
+}
+:root[data-theme="arctic"] .player-container {
+    background:linear-gradient(145deg,#ffffff,#eaf2f8);
+    box-shadow:0 24px 65px rgba(31,74,110,.17),inset 0 1px 0 #fff;
+}
+:root[data-theme="arctic"] .playlist-container {
+    background:linear-gradient(145deg,#fff,#edf4f9);
+    color:#172b40;border-color:rgba(34,82,120,.17);
+}
+:root[data-theme="arctic"] .playlist-header h2,
+:root[data-theme="arctic"] .playlist-list .song-item-title strong { color:#172b40; }
+:root[data-theme="arctic"] .playlist-search { background:#e8f0f6;border-color:#cbd9e5; }
+:root[data-theme="arctic"] .playlist-search input { color:#172b40; }
