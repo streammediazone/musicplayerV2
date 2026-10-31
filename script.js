@@ -373,10 +373,19 @@ function saveFavorites() {
     catch (error) { /* Obľúbené zostanú dostupné počas aktuálnej relácie. */ }
 }
 
+function normalizeSearchText(value) {
+    return String(value)
+        .normalize('NFD')
+        .replace(/[\\u0300-\\u036f]/g, '')
+        .toLocaleLowerCase();
+}
+
 function renderPlaylist() {
-    const query = playlistSearch.value.trim().toLocaleLowerCase('sk');
+    const query = normalizeSearchText(playlistSearch.value.trim());
+    const searchTerms = query.split(/\\s+/).filter(Boolean);
     const visibleSongs = songs.map((song, index) => ({ song, index })).filter(({ song, index }) => {
-        const matchesQuery = `${song.title} ${song.artist}`.toLocaleLowerCase('sk').includes(query);
+        const searchableText = normalizeSearchText(`${song.title} ${song.artist} ${song.name}`);
+        const matchesQuery = searchTerms.every(term => searchableText.includes(term));
         return matchesQuery && (!showFavoritesOnly || favoriteSongs.has(index));
     });
 
@@ -426,11 +435,10 @@ function renderPlaylist() {
         playlistUl.append(item);
     });
 
-    playlistCount.textContent = `${visibleSongs.length} / ${songs.length} skladieb`;
+    playlistCount.textContent = `${visibleSongs.length} z ${songs.length} skladieb`;
     playlistEmpty.hidden = visibleSongs.length > 0;
     updateActiveSongInPlaylist();
 }
-
 function displayPlaylist() { renderPlaylist(); }
 
 function openPlaylist() {
