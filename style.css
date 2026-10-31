@@ -1303,3 +1303,171 @@ body {
     }
     :root[data-skin="vinyl-retro"] .player-container::after { right:18px;top:95px;height:85px; }
 }
+
+
+/* Cleanup skin details requested from visual review. */
+:root[data-skin="vinyl-retro"] .player-container::before {
+    content:none !important;
+    display:none !important;
+}
+:root[data-skin="vinyl-retro"] .player-container::after {
+    content:none !important;
+    display:none !important;
+}
+:root[data-skin="minimal-studio"] .player-container::before {
+    content:none !important;
+    display:none !important;
+}
+:root[data-skin="minimal-studio"] .player-container::after {
+    content:none !important;
+    display:none !important;
+}
+
+/* Neon Cyber – futuristic synth console, intentionally unlike the other skins. */
+:root[data-skin="neon-cyber"] body {
+    background:
+      radial-gradient(ellipse at 12% 10%,rgba(0,245,255,.16),transparent 38%),
+      radial-gradient(ellipse at 88% 82%,rgba(255,0,153,.14),transparent 36%),
+      #050711;
+}
+:root[data-skin="neon-cyber"] .player-container {
+    position:relative;
+    isolation:isolate;
+    overflow:visible;
+    padding:36px 26px 25px;
+    border:1px solid #28f4ff;
+    border-radius:5px;
+    background:
+      linear-gradient(135deg,rgba(20,40,68,.97),rgba(5,9,20,.98)),
+      #070b16;
+    box-shadow:
+      0 0 0 3px rgba(40,244,255,.07),
+      0 0 28px rgba(40,244,255,.17),
+      12px 12px 0 rgba(255,0,153,.23),
+      0 25px 70px rgba(0,0,0,.65);
+}
+:root[data-skin="neon-cyber"] .player-container::before {
+    content:"";
+    position:absolute;
+    z-index:-1;
+    inset:12px;
+    border:1px dashed rgba(40,244,255,.24);
+    border-radius:2px;
+    pointer-events:none;
+}
+:root[data-skin="neon-cyber"] .player-container::after {
+    content:"";
+    position:absolute;
+    z-index:-1;
+    top:42px;left:-8px;
+    width:5px;height:74px;
+    background:#ff00a8;
+    box-shadow:0 0 14px #ff00a8;
+}
+:root[data-skin="neon-cyber"] .song-image {
+    position:relative;
+    border-radius:3px;
+    padding:7px;
+    border:1px solid #28f4ff;
+    background:#0b1325;
+    outline:none;
+    box-shadow:7px 7px 0 rgba(255,0,153,.4),0 0 25px rgba(40,244,255,.2);
+    transform:perspective(700px) rotateY(-4deg) rotateX(2deg);
+}
+:root[data-skin="neon-cyber"] .song-image img {
+    border-radius:1px;
+    filter:saturate(1.15) contrast(1.05);
+}
+:root[data-skin="neon-cyber"] #song-title {
+    color:#f2fbff;
+    font-family:"Arial Narrow",Arial,sans-serif;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.09em;
+    text-shadow:2px 0 rgba(255,0,153,.6),-2px 0 rgba(40,244,255,.55);
+}
+:root[data-skin="neon-cyber"] #song-artist {
+    color:#28f4ff;
+    font-family:monospace;
+    text-transform:uppercase;
+    letter-spacing:.2em;
+}
+:root[data-skin="neon-cyber"] .song-info {
+    padding:4px 9px;
+    border:1px solid rgba(40,244,255,.35);
+    border-radius:2px;
+    background:rgba(40,244,255,.07);
+    color:#9cfaff;
+    font-family:monospace;
+    letter-spacing:.12em;
+}
+:root[data-skin="neon-cyber"] .progress-container {
+    height:6px;
+    border:1px solid rgba(40,244,255,.4);
+    border-radius:0;
+    background:#09101d;
+}
+:root[data-skin="neon-cyber"] .progress {
+    border-radius:0;
+    background:linear-gradient(90deg,#28f4ff,#ff00a8);
+    box-shadow:0 0 12px rgba(40,244,255,.75);
+}
+:root[data-skin="neon-cyber"] .duration-wrapper,
+:root[data-skin="neon-cyber"] .controls i,
+:root[data-skin="neon-cyber"] .volume-container i {
+    color:#b7d6e8;
+}
+:root[data-skin="neon-cyber"] .controls .main-button {
+    border:1px solid #28f4ff;
+    border-radius:3px;
+    background:linear-gradient(135deg,#28f4ff,#087dba);
+    color:#03111b;
+    box-shadow:4px 4px 0 #ff00a8,0 0 20px rgba(40,244,255,.28);
+}
+:root[data-skin="neon-cyber"] .controls .main-button:hover {
+    transform:translate(2px,2px);
+    box-shadow:2px 2px 0 #ff00a8,0 0 28px rgba(40,244,255,.45);
+}
+:root[data-skin="neon-cyber"] #volume-slider { background:#15273a; }
+:root[data-skin="neon-cyber"] #volume-slider::-webkit-slider-thumb { background:#ff00a8; }
+:root[data-skin="neon-cyber"] #volume-slider::-moz-range-thumb { background:#ff00a8; }
+:root[data-skin="neon-cyber"] .playback-options {
+    border-top:1px solid rgba(40,244,255,.27);
+    background:linear-gradient(90deg,rgba(40,244,255,.04),rgba(255,0,153,.04));
+}
+:root[data-skin="neon-cyber"] .playback-options > i,
+:root[data-skin="neon-cyber"] .playback-options > button { color:#b7d6e8; }
+:root[data-skin="neon-cyber"] .playback-options > i:hover,
+:root[data-skin="neon-cyber"] .playback-options > i.active,
+:root[data-skin="neon-cyber"] .playback-options > button:hover {
+    color:#28f4ff;
+    background:rgba(40,244,255,.1);
+    box-shadow:inset 0 -2px #28f4ff;
+}
+:root[data-skin="neon-cyber"] .playlist-container {
+    color:#e9f9ff;
+    background:linear-gradient(145deg,#101a2d,#070d19);
+    border:1px solid rgba(40,244,255,.55);
+    border-radius:4px;
+    box-shadow:0 0 24px rgba(40,244,255,.13),9px 9px 0 rgba(255,0,153,.22);
+}
+:root[data-skin="neon-cyber"] .playlist-header h2,
+:root[data-skin="neon-cyber"] .playlist-list .song-item-title strong { color:#e9f9ff; }
+:root[data-skin="neon-cyber"] .playlist-eyebrow,
+:root[data-skin="neon-cyber"] .playlist-count,
+:root[data-skin="neon-cyber"] .playlist-list .song-item-title span { color:#79a9c2; }
+:root[data-skin="neon-cyber"] .playlist-search {
+    background:#080f1b;
+    border-color:rgba(40,244,255,.35);
+    border-radius:3px;
+}
+:root[data-skin="neon-cyber"] .playlist-search input { color:#e9f9ff; }
+:root[data-skin="neon-cyber"] .playlist-list li.active-song {
+    background:rgba(40,244,255,.09);
+    box-shadow:inset 3px 0 #28f4ff;
+}
+:root[data-skin="neon-cyber"] .favorite-btn.is-favorite { color:#ff00a8; }
+
+@media (max-width:760px) {
+    :root[data-skin="neon-cyber"] .player-container { padding:32px 20px 22px; }
+}
