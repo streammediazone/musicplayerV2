@@ -1622,3 +1622,119 @@ body {
   background:var(--neon-tint)!important;box-shadow:inset 3px 0 var(--neon-primary)!important;
 }
 :root[data-skin="neon-cyber"] .favorite-btn.is-favorite {color:var(--neon-primary)!important;}
+
+
+/* Neon Cyber v2 — distinct HUD / synth-console identity (not the Prism editorial look). */
+:root[data-skin="neon-cyber"] body {
+  background-color:#050610;
+  background-image:
+    linear-gradient(rgba(35,235,255,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(35,235,255,.055) 1px,transparent 1px),
+    radial-gradient(ellipse at 50% 45%,rgba(20,55,95,.45),transparent 65%);
+  background-size:28px 28px,28px 28px,auto;
+}
+:root[data-skin="neon-cyber"] .player-container {
+  border:1px solid var(--neon-primary)!important;
+  border-radius:2px!important;
+  padding:30px 24px 24px!important;
+  background:
+    linear-gradient(120deg,rgba(0,0,0,.92) 0 16%,transparent 16.2%),
+    linear-gradient(155deg,#101729 0%,#080b14 72%,#111827 100%)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04),
+    0 0 24px var(--neon-glow),
+    18px 18px 0 rgba(0,0,0,.48)!important;
+}
+:root[data-skin="neon-cyber"] .player-container::before {
+  content:"";
+  position:absolute;inset:10px;
+  border:1px solid color-mix(in srgb,var(--neon-primary) 30%,transparent);
+  clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 0,2px 2px,2px calc(100% - 2px),calc(100% - 2px) calc(100% - 2px),calc(100% - 2px) 2px,2px 2px);
+  pointer-events:none;
+}
+:root[data-skin="neon-cyber"] .player-container::after {
+  content:"";
+  position:absolute;top:0;left:24px;right:24px;height:3px;
+  background:linear-gradient(90deg,transparent,var(--neon-primary) 18%,var(--neon-secondary) 82%,transparent);
+  box-shadow:0 0 14px var(--neon-glow);
+}
+:root[data-skin="neon-cyber"] .song-image {
+  padding:8px!important;
+  border:1px solid var(--neon-primary)!important;
+  border-radius:2px!important;
+  background:#050812!important;
+  transform:none!important;
+  box-shadow:8px 8px 0 rgba(0,0,0,.55),0 0 22px var(--neon-glow)!important;
+}
+:root[data-skin="neon-cyber"] .song-image img {
+  border-radius:0!important;
+  filter:saturate(1.2) contrast(1.08)!important;
+}
+:root[data-skin="neon-cyber"] #song-title {
+  font-family:ui-monospace,Consolas,monospace!important;
+  font-size:clamp(1.15rem,3vw,1.65rem)!important;
+  font-weight:800!important;
+  letter-spacing:.09em!important;
+  text-transform:uppercase!important;
+  color:var(--neon-text)!important;
+  text-shadow:0 0 12px var(--neon-glow)!important;
+}
+:root[data-skin="neon-cyber"] #song-artist {
+  font-family:ui-monospace,Consolas,monospace!important;
+  font-size:.76rem!important;
+  letter-spacing:.22em!important;
+  text-transform:uppercase!important;
+  color:var(--neon-primary)!important;
+}
+:root[data-skin="neon-cyber"] .song-info {
+  border:1px solid color-mix(in srgb,var(--neon-primary) 40%,transparent)!important;
+  border-radius:2px!important;
+  background:var(--neon-tint)!important;
+  color:var(--neon-text)!important;
+  font-family:ui-monospace,Consolas,monospace!important;
+}
+:root[data-skin="neon-cyber"] .progress-container {
+  height:5px!important;border:0!important;border-radius:0!important;background:#1a2232!important;
+}
+:root[data-skin="neon-cyber"] .progress {
+  border-radius:0!important;
+  background:linear-gradient(90deg,var(--neon-primary),var(--neon-secondary))!important;
+  box-shadow:0 0 12px var(--neon-glow)!important;
+}
+:root[data-skin="neon-cyber"] .controls .main-button {
+  border:1px solid var(--neon-primary)!important;
+  border-radius:2px!important;
+  background:var(--neon-primary)!important;
+  color:#050711!important;
+  box-shadow:5px 5px 0 var(--neon-secondary),0 0 18px var(--neon-glow)!important;
+}
+:root[data-skin="neon-cyber"] .controls .main-button:hover {
+  transform:translate(2px,2px)!important;
+  box-shadow:3px 3px 0 var(--neon-secondary),0 0 24px var(--neon-glow)!important;
+}
+:root[data-skin="neon-cyber"] .playback-options {
+  border-top:1px solid color-mix(in srgb,var(--neon-primary) 35%,transparent)!important;
+}
+:root[data-skin="neon-cyber"] .playlist-container {
+  border:1px solid var(--neon-primary)!important;
+  border-radius:2px!important;
+  background:linear-gradient(160deg,#111827,#060913)!important;
+  box-shadow:0 0 24px var(--neon-glow),12px 12px 0 rgba(0,0,0,.42)!important;
+}
+:root[data-skin="neon-cyber"] .playlist-header h2 {
+  font-family:ui-monospace,Consolas,monospace!important;
+  text-transform:uppercase!important;letter-spacing:.12em!important;
+  color:var(--neon-primary)!important;
+}
+:root[data-skin="neon-cyber"] .playlist-search {
+  border-radius:2px!important;
+  border-color:color-mix(in srgb,var(--neon-primary) 38%,transparent)!important;
+  background:#050812!important;
+}
+:root[data-skin="neon-cyber"] .playlist-list li.active-song {
+  background:var(--neon-tint)!important;
+  box-shadow:inset 3px 0 var(--neon-primary)!important;
+}
+@media (max-width:760px) {
+  :root[data-skin="neon-cyber"] .player-container {padding:28px 18px 20px!important;}
+}
