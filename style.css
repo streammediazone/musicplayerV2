@@ -201,6 +201,7 @@ h3 {
 
 /* Playlist – vizuálne zladený s prehrávačom */
 body { overflow-x: hidden; }
+.player-shell { position: relative; display: inline-block; vertical-align: middle; }
 .player-container { position: relative; z-index: 1; }
 
 .playlist-backdrop {
@@ -212,12 +213,12 @@ body { overflow-x: hidden; }
 .playlist-backdrop.show { opacity: 1; visibility: visible; }
 
 .playlist-container {
-    position: fixed; z-index: 20;
-    top: var(--playlist-top, 18px);
-    left: var(--playlist-left, 50%);
-    width: min(390px, calc(100vw - var(--playlist-left, 50%) - 12px));
-    height: var(--playlist-height, min(760px, calc(100dvh - 36px)));
-    max-height: calc(100dvh - var(--playlist-top, 18px) - 12px);
+    position: absolute; z-index: 20;
+    top: 0;
+    left: 100%;
+    width: min(390px, max(280px, calc(100vw - 374px)));
+    height: 100%;
+    max-height: min(760px, calc(100dvh - 36px));
     display: flex; flex-direction: column;
     margin: 0; padding: 22px 20px 16px;
     overflow: hidden;
@@ -319,9 +320,9 @@ body { overflow-x: hidden; }
 body.playlist-open { overflow: hidden; }
 body.playlist-open .player-container { border-top-right-radius: 0; border-bottom-right-radius: 0; }
 
-@media (max-width: 480px) {
+@media (max-width: 760px) {
     .playlist-container {
-        width: min(340px, calc(100vw - var(--playlist-left, 50%) - 8px));
+        width: min(340px, calc(100vw - 374px));
         padding: 18px 14px 12px;
     }
 }
