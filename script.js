@@ -441,7 +441,15 @@ function renderPlaylist() {
 }
 function displayPlaylist() { renderPlaylist(); }
 
+function positionPlaylist() {
+    const rect = playerContainer.getBoundingClientRect();
+    playlistContainer.style.setProperty('--playlist-left', `${Math.round(rect.right)}px`);
+    playlistContainer.style.setProperty('--playlist-top', `${Math.round(rect.top)}px`);
+    playlistContainer.style.setProperty('--playlist-height', `${Math.round(rect.height)}px`);
+}
+
 function openPlaylist() {
+    positionPlaylist();
     playlistContainer.classList.add('show');
     playlistBackdrop.classList.add('show');
     togglePlaylistBtn.classList.add('active');
@@ -459,6 +467,10 @@ function closePlaylist() {
     document.body.classList.remove('playlist-open');
     togglePlaylistBtn.focus();
 }
+
+window.addEventListener('resize', () => {
+    if (playlistContainer.classList.contains('show')) positionPlaylist();
+});
 
 function togglePlaylist() {
     if (playlistContainer.classList.contains('show')) closePlaylist();
