@@ -512,7 +512,7 @@ const playerSkins = [
     { id: 'midnight-glass', label: 'Midnight Glass' },
     { id: 'neon-cyber', label: 'Neon Cyber' },
     { id: 'vinyl-retro', label: 'Vinyl Retro' },
-    { id: 'minimal-studio', label: 'Minimal Studio' },
+    { id: 'minimal-studio', label: 'Prism Atelier' },
     { id: 'liquid-glass', label: 'Liquid Glass' },
     { id: 'modern-dashboard', label: 'Modern Dashboard' }
 ];
