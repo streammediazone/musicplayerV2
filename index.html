@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <div class="player-shell">
     <div class="player-container">
         <div class="song-image">
             <img src="obrazky/f1 album.jpg" alt="Obal albumu" id="cover">
@@ -43,7 +44,6 @@
 
     </div>
 
-    <div class="playlist-backdrop" id="playlist-backdrop"></div>
     <aside class="playlist-container" id="playlist-container" aria-hidden="true" aria-label="Playlist">
         <div class="playlist-header">
             <div>
@@ -68,7 +68,9 @@
         <ul id="playlist" class="playlist-list"></ul>
         <p id="playlist-empty" class="playlist-empty" hidden>Nenašli sa žiadne skladby.</p>
     </aside>
+    </div>
 
+    <div class="playlist-backdrop" id="playlist-backdrop"></div>
     <script src="script.js"></script>
 </body>
 </html>
