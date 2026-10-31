@@ -24,6 +24,7 @@ const playlistCount = document.getElementById('playlist-count');
 const playlistEmpty = document.getElementById('playlist-empty');
 const favoritesFilterBtn = document.getElementById('favorites-filter');
 const themeToggle = document.getElementById('theme-toggle');
+const skinToggle = document.getElementById('skin-toggle');
 
 let favoriteSongs = new Set();
 let showFavoritesOnly = false;
@@ -501,6 +502,41 @@ try {
 }
 applyPlayerTheme(activeThemeIndex, false);
 
+
+/* Prepínanie celkového dizajnu prehrávača – nezávisle od farebnej témy. */
+const playerSkins = [
+    { id: 'midnight-glass', label: 'Midnight Glass' },
+    { id: 'neon-cyber', label: 'Neon Cyber' },
+    { id: 'vinyl-retro', label: 'Vinyl Retro' },
+    { id: 'minimal-studio', label: 'Minimal Studio' }
+];
+let activeSkinIndex = 0;
+
+function applyPlayerSkin(index, persist = true) {
+    activeSkinIndex = (index + playerSkins.length) % playerSkins.length;
+    const skin = playerSkins[activeSkinIndex];
+    document.documentElement.dataset.skin = skin.id;
+    skinToggle.title = `Dizajn: ${skin.label} – kliknutím zmeniť`;
+    skinToggle.setAttribute('aria-label', `Aktuálny dizajn: ${skin.label}. Zmeniť dizajn`);
+    if (persist) {
+        try { localStorage.setItem('musicplayer-skin', skin.id); }
+        catch (error) { /* Dizajn zostane aktívny do obnovenia stránky. */ }
+    }
+}
+
+function cyclePlayerSkin() {
+    applyPlayerSkin(activeSkinIndex + 1);
+}
+
+try {
+    const savedSkin = localStorage.getItem('musicplayer-skin');
+    const savedSkinIndex = playerSkins.findIndex(skin => skin.id === savedSkin);
+    if (savedSkinIndex >= 0) activeSkinIndex = savedSkinIndex;
+} catch (error) {
+    // Použije sa predvolený dizajn.
+}
+applyPlayerSkin(activeSkinIndex, false);
+
 // Ovládacie prvky a udalosti prehrávača.
 playBtn.addEventListener('click', () => {
     if (isPlaying) pauseSong();
@@ -514,6 +550,7 @@ repeatBtn.addEventListener('click', toggleRepeat);
 shuffleBtn.addEventListener('click', toggleShuffle);
 togglePlaylistBtn.addEventListener('click', togglePlaylist);
 themeToggle.addEventListener('click', cyclePlayerTheme);
+skinToggle.addEventListener('click', cyclePlayerSkin);
 closePlaylistBtn.addEventListener('click', closePlaylist);
 playlistBackdrop.addEventListener('click', closePlaylist);
 playlistSearch.addEventListener('input', renderPlaylist);
