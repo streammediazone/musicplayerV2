@@ -201,8 +201,8 @@ h3 {
 
 /* Playlist – vizuálne zladený s prehrávačom */
 body { overflow-x: hidden; }
-.player-shell { position: relative; display: inline-block; vertical-align: middle; }
-.player-container { position: relative; z-index: 1; }
+.player-shell { position: relative; z-index: 1; display: inline-block; vertical-align: middle; }
+.player-container { position: static; z-index: auto; }
 
 .playlist-backdrop {
     position: fixed; inset: 0; z-index: 19;
