@@ -218,7 +218,7 @@ body { overflow-x: hidden; }
     left: 100%;
     width: min(390px, max(280px, calc(100vw - 374px)));
     height: 100%;
-    max-height: min(760px, calc(100dvh - 36px));
+    max-height: none;
     display: flex; flex-direction: column;
     margin: 0; padding: 22px 20px 16px;
     overflow: hidden;
