@@ -23,6 +23,7 @@ const playlistSearch = document.getElementById('playlist-search');
 const playlistCount = document.getElementById('playlist-count');
 const playlistEmpty = document.getElementById('playlist-empty');
 const favoritesFilterBtn = document.getElementById('favorites-filter');
+const themeToggle = document.getElementById('theme-toggle');
 
 let favoriteSongs = new Set();
 let showFavoritesOnly = false;
@@ -465,6 +466,41 @@ function togglePlaylist() {
     else openPlaylist();
 }
 
+
+/* Prepínanie dizajnových tém prehrávača. */
+const playerThemes = [
+    { id: 'midnight', label: 'Midnight' },
+    { id: 'ocean', label: 'Ocean' },
+    { id: 'emerald', label: 'Emerald' },
+    { id: 'sunset', label: 'Sunset' }
+];
+let activeThemeIndex = 0;
+
+function applyPlayerTheme(index, persist = true) {
+    activeThemeIndex = (index + playerThemes.length) % playerThemes.length;
+    const theme = playerThemes[activeThemeIndex];
+    document.documentElement.dataset.theme = theme.id;
+    themeToggle.title = `Téma: ${theme.label} – kliknutím zmeniť`;
+    themeToggle.setAttribute('aria-label', `Aktuálna téma: ${theme.label}. Zmeniť tému`);
+    if (persist) {
+        try { localStorage.setItem('musicplayer-theme', theme.id); }
+        catch (error) { /* Téma zostane aktívna do obnovenia stránky. */ }
+    }
+}
+
+function cyclePlayerTheme() {
+    applyPlayerTheme(activeThemeIndex + 1);
+}
+
+try {
+    const savedTheme = localStorage.getItem('musicplayer-theme');
+    const savedIndex = playerThemes.findIndex(theme => theme.id === savedTheme);
+    if (savedIndex >= 0) activeThemeIndex = savedIndex;
+} catch (error) {
+    // Použije sa predvolená téma.
+}
+applyPlayerTheme(activeThemeIndex, false);
+
 // Ovládacie prvky a udalosti prehrávača.
 playBtn.addEventListener('click', () => {
     if (isPlaying) pauseSong();
@@ -477,6 +513,10 @@ volumeSlider.addEventListener('input', setVolume);
 repeatBtn.addEventListener('click', toggleRepeat);
 shuffleBtn.addEventListener('click', toggleShuffle);
 togglePlaylistBtn.addEventListener('click', togglePlaylist);
+themeToggle.addEventListener('click', cyclePlayerTheme);
+themeToggle.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); cyclePlayerTheme(); }
+});
 closePlaylistBtn.addEventListener('click', closePlaylist);
 playlistBackdrop.addEventListener('click', closePlaylist);
 playlistSearch.addEventListener('input', renderPlaylist);
