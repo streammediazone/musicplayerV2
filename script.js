@@ -18,8 +18,9 @@ const togglePlaylistBtn = document.getElementById('toggle-playlist-btn');
 const playlistContainer = document.getElementById('playlist-container');
 const playlistUl = document.getElementById('playlist');
 
-// Zoznam skladieb (uprav podľa svojich súborov!)
+// Zoznam skladieb – názvy súborov zodpovedajú obsahu priečinka hudba/.
 const songs = [
+
     {
         title: 'Dont Let Me Drown',
         artist: 'Burna Boy',
@@ -182,298 +183,247 @@ const songs = [
     //     artist: 'Interpret 3',
     //     name: 'song3',
     //     cover: 'cover3.jpg'
-    // }
+    // },
+    {
+        title: 'Dracula',
+        artist: 'Tame Impala',
+        name: 'Tame Impala - Dracula',
+        cover: 'f1 album.jpg'
+    }
 ];
 
-let songIndex = 0; // Index aktuálnej skladby
+let songIndex = 0;
 let isPlaying = false;
 let isRepeating = false;
 let isShuffling = false;
 let shuffledIndices = [];
 
-// Načítanie skladby
+function formatTime(seconds) {
+    if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
+function updateSongNumber() {
+    const position = isShuffling ? shuffledIndices.indexOf(songIndex) + 1 : songIndex + 1;
+    songNumberEl.textContent = `${position}/${songs.length}`;
+}
+
+function updateActiveSongInPlaylist() {
+    playlistUl.querySelectorAll('.playlist-item').forEach((item) => {
+        const active = Number(item.dataset.index) === songIndex;
+        item.classList.toggle('active-song', active);
+        if (active && playlistContainer.classList.contains('show')) {
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    });
+}
+
 function loadSong(song) {
     songTitle.textContent = song.title;
     songArtist.textContent = song.artist;
     audio.src = `hudba/${song.name}.mp3`;
+    audio.load();
+
+    cover.onerror = () => {
+        cover.onerror = null;
+        cover.src = 'obrazky/f1 album.jpg';
+    };
     cover.src = `obrazky/${song.cover}`;
 
-    let currentDisplayIndex;
-    let totalSongsCount;
+    progress.style.width = '0%';
+    currentTimeEl.textContent = '0:00';
+    durationEl.textContent = '0:00';
+    updateSongNumber();
+    updateActiveSongInPlaylist();
+}
+
+function setPlayingState(playing) {
+    isPlaying = playing;
+    playBtn.classList.toggle('fa-play', !playing);
+    playBtn.classList.toggle('fa-pause', playing);
+    playerContainer.classList.toggle('playing', playing);
+    document.querySelector('.song-image').classList.toggle('pulsing', playing);
+    playBtn.title = playing ? 'Pozastaviť' : 'Prehrať';
+}
+
+async function playSong() {
+    try {
+        await audio.play();
+        setPlayingState(true);
+    } catch (error) {
+        setPlayingState(false);
+        console.warn('Prehrávanie sa nepodarilo spustiť:', error);
+    }
+}
+
+function pauseSong() {
+    audio.pause();
+    setPlayingState(false);
+}
+
+function buildShuffleOrder() {
+    shuffledIndices = Array.from({ length: songs.length }, (_, index) => index);
+    for (let i = shuffledIndices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledIndices[i], shuffledIndices[j]] = [shuffledIndices[j], shuffledIndices[i]];
+    }
+    const currentPosition = shuffledIndices.indexOf(songIndex);
+    [shuffledIndices[0], shuffledIndices[currentPosition]] =
+        [shuffledIndices[currentPosition], shuffledIndices[0]];
+}
+
+function nextSong() {
+    if (isShuffling) {
+        const position = shuffledIndices.indexOf(songIndex);
+        songIndex = shuffledIndices[(position + 1) % shuffledIndices.length];
+    } else {
+        songIndex = (songIndex + 1) % songs.length;
+    }
+    loadSong(songs[songIndex]);
+    playSong();
+}
+
+function prevSong() {
+    // Ak skladba hrá dlhšie ako 3 sekundy, tlačidlo späť ju začne od začiatku.
+    if (audio.currentTime > 3) {
+        audio.currentTime = 0;
+        return;
+    }
 
     if (isShuffling) {
-        // Ak je zapnuté náhodné prehrávanie, nájdeme index aktuálnej skladby
-        // v aktuálne zamiešanom poradí (shuffledIndices).
-        currentDisplayIndex = shuffledIndices.indexOf(songIndex) + 1;
-        totalSongsCount = shuffledIndices.length; // Počet skladieb v zamiešanom poradí
+        const position = shuffledIndices.indexOf(songIndex);
+        songIndex = shuffledIndices[(position - 1 + shuffledIndices.length) % shuffledIndices.length];
     } else {
-        // Ak nie je zapnuté náhodné prehrávanie, používame pôvodný songIndex.
-        currentDisplayIndex = songIndex + 1;
-        totalSongsCount = songs.length; // Celkový počet skladieb
-        updateActiveSongInPlaylist(); // <--- SEM PRIDAJ TENTO RIADOK
-}
-
-    // Aktualizuj ukazovateľ skladby
-    songNumberEl.textContent = `${currentDisplayIndex}/${totalSongsCount}`;
-}
-
-// Prehrať skladbu
-function playSong() {
-    isPlaying = true;
-    playBtn.classList.replace('fa-play', 'fa-pause');
-    audio.play();
-    playerContainer.classList.add('playing'); // Pridá triedu pre vizuálne efekty (napr. rotácia obalu)
-}
-
-function playSong() {
-    isPlaying = true;
-    playBtn.classList.replace('fa-play', 'fa-pause');
-    audio.play();
-    playerContainer.classList.add('playing');
-    // NOVÝ RIADOK: Pridá triedu 'pulsing' k elementu song-image
-    document.querySelector('.song-image').classList.add('pulsing');
-}
-
-// Pozastaviť skladbu
-function pauseSong() {
-    isPlaying = false;
-    playBtn.classList.replace('fa-pause', 'fa-play');
-    audio.pause();
-    playerContainer.classList.remove('playing');
-}
-
-function pauseSong() {
-    isPlaying = false;
-    playBtn.classList.replace('fa-pause', 'fa-play');
-    audio.pause();
-    playerContainer.classList.remove('playing');
-    // NOVÝ RIADOK: Odoberie triedu 'pulsing' z elementu song-image
-    document.querySelector('.song-image').classList.remove('pulsing');
-}
-
-// Predchádzajúca skladba
-function prevSong() {
-    if (isShuffling && shuffledIndices.length > 0) {
-        let currentShuffledIndex = shuffledIndices.indexOf(songIndex);
-        if (currentShuffledIndex > 0) {
-            songIndex = shuffledIndices[currentShuffledIndex - 1];
-        } else {
-            // Ak je prvá skladba v shuffle poradí, presunieme sa na poslednú
-            songIndex = shuffledIndices[shuffledIndices.length - 1];
-        }
-    } else {
-        songIndex--;
-        if (songIndex < 0) {
-            songIndex = songs.length - 1;
-        }
+        songIndex = (songIndex - 1 + songs.length) % songs.length;
     }
     loadSong(songs[songIndex]);
     playSong();
 }
 
-// Ďalšia skladba
-function nextSong() {
-    if (isShuffling && shuffledIndices.length > 0) {
-        let currentShuffledIndex = shuffledIndices.indexOf(songIndex);
-        if (currentShuffledIndex < shuffledIndices.length - 1) {
-            songIndex = shuffledIndices[currentShuffledIndex + 1];
-        } else {
-            // Ak je posledná skladba v shuffle poradí, vrátime sa na prvú
-            songIndex = shuffledIndices[0];
-        }
+function updateProgress() {
+    const duration = audio.duration;
+    const currentTime = audio.currentTime;
+
+    if (Number.isFinite(duration) && duration > 0) {
+        progress.style.width = `${(currentTime / duration) * 100}%`;
+        durationEl.textContent = formatTime(duration);
     } else {
-        songIndex++;
-        if (songIndex > songs.length - 1) {
-            songIndex = 0;
-        }
+        progress.style.width = '0%';
     }
-    loadSong(songs[songIndex]);
-    playSong();
+    currentTimeEl.textContent = formatTime(currentTime);
 }
 
-// Aktualizácia priebehu
-function updateProgress(e) {
-    if (isPlaying) {
-        const { duration, currentTime } = e.srcElement;
-        const progressPercent = (currentTime / duration) * 100;
-        progress.style.width = `${progressPercent}%`;
+function setProgress(event) {
+    if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+    const bounds = progressContainer.getBoundingClientRect();
+    const fraction = Math.min(1, Math.max(0, (event.clientX - bounds.left) / bounds.width));
+    audio.currentTime = fraction * audio.duration;
+}
 
-        // Zobrazenie času
-        const durationMinutes = Math.floor(duration / 60);
-        let durationSeconds = Math.floor(duration % 60);
-        if (durationSeconds < 10) {
-            durationSeconds = `0${durationSeconds}`;
-        }
-        if (durationSeconds) { // Zabráni NaN
-            durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
-        }
-
-        const currentMinutes = Math.floor(currentTime / 60);
-        let currentSeconds = Math.floor(currentTime % 60);
-        if (currentSeconds < 10) {
-            currentSeconds = `0${currentSeconds}`;
-        }
-        currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+function setVolume(event) {
+    audio.volume = Number(event.target.value);
+    try {
+        localStorage.setItem('musicplayer-volume', String(audio.volume));
+    } catch (error) {
+        // Prehliadač môže blokovať localStorage; prehrávač funguje aj bez neho.
     }
 }
 
-// Nastavenie priebehu kliknutím
-function setProgress(e) {
-    const width = this.clientWidth;
-    const clickX = e.offsetX;
-    const { duration } = audio;
-    audio.currentTime = (clickX / width) * duration;
-}
-
-// Nastavenie hlasitosti
-function setVolume(e) {
-    audio.volume = e.target.value;
-}
-
-// Prepnutie opakovania
 function toggleRepeat() {
     isRepeating = !isRepeating;
+    audio.loop = isRepeating;
     repeatBtn.classList.toggle('active', isRepeating);
-    if (isRepeating) {
-        audio.loop = true;
-    } else {
-        audio.loop = false;
-    }
-    console.log('Opakovanie:', isRepeating);
+    repeatBtn.setAttribute('aria-pressed', String(isRepeating));
 }
 
-// Prepnutie náhodného prehrávania
 function toggleShuffle() {
     isShuffling = !isShuffling;
     shuffleBtn.classList.toggle('active', isShuffling);
-    if (isShuffling) {
-        shuffledIndices = Array.from({ length: songs.length }, (_, i) => i);
-        shuffleArray(shuffledIndices);
-        // Ak aktuálna skladba nie je v shuffle poradí, alebo ak je to prvé zapnutie shufflu,
-        // nájdeme jej pozíciu alebo ju pridáme na začiatok shuffle poradia, ak je to možné.
-        // Pre jednoduchosť ju prehodíme na náhodnú, aby sa predišlo zamrznutiu na jednej skladbe.
-        if (shuffledIndices[0] !== songIndex) {
-            const currentSongIdxInShuffled = shuffledIndices.indexOf(songIndex);
-            if (currentSongIdxInShuffled > -1) {
-                // Prehodíme aktuálnu skladbu na začiatok, aby sa po shuffli hralo od nej
-                [shuffledIndices[0], shuffledIndices[currentSongIdxInShuffled]] = [shuffledIndices[currentSongIdxInShuffled], shuffledIndices[0]];
-            } else {
-                 // Ak aktuálna skladba nie je v shuffledIndices (nemalo by sa stať),
-                 // nastavíme ju na prvú v novom shuffle poradí, aby sa znova načítala
-                 songIndex = shuffledIndices[0];
-                 loadSong(songs[songIndex]);
-            }
-        }
-    } else {
-        // Vypnutie shufflu, resetujeme index na pôvodnú pozíciu skladby, ak existuje
-        // alebo len na pôvodný index predtým, ako bol shuffle zapnutý
-        // Pre jednoduchosť to necháme tak, ako je, a po ďalšej skladbe sa vráti do normálu
-        // Alebo môžeme nájsť pôvodný index aktuálnej skladby
-        songIndex = songs.indexOf(songs[songIndex]); // Nájde pôvodný index aktuálnej skladby
-    }
-    console.log('Náhodné prehrávanie:', isShuffling);
-    console.log('Shuffled Indices:', shuffledIndices);
-}
+    shuffleBtn.setAttribute('aria-pressed', String(isShuffling));
 
-// Funkcia na zamiešanie poľa (Fisher-Yates)
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+    if (isShuffling) {
+        buildShuffleOrder();
+    } else {
+        shuffledIndices = [];
     }
+    updateSongNumber();
 }
 
 function displayPlaylist() {
-    playlistUl.innerHTML = ''; // Vyčistí zoznam pred opätovným generovaním
+    playlistUl.replaceChildren();
+
     songs.forEach((song, index) => {
-        const listItem = document.createElement('li');
-        listItem.setAttribute('data-index', index); // Uloží index skladby ako data atribút
-        listItem.classList.add('playlist-item');
+        const item = document.createElement('li');
+        item.className = 'playlist-item';
+        item.dataset.index = String(index);
 
-        // Kontajner pre názov a interpreta
-        const songDetails = document.createElement('div');
-        songDetails.classList.add('song-item-title');
-        songDetails.innerHTML = `<strong>${song.title}</strong><br>${song.artist}`;
-        listItem.appendChild(songDetails);
+        const details = document.createElement('div');
+        details.className = 'song-item-title';
 
-        // Pridanie triedy 'active-song' pre aktuálne prehrávanú skladbu
-        if (index === songIndex) {
-            listItem.classList.add('active-song');
-        }
+        const title = document.createElement('strong');
+        title.textContent = song.title;
+        const artist = document.createElement('span');
+        artist.textContent = song.artist;
+        artist.style.display = 'block';
 
-        listItem.addEventListener('click', () => {
-            songIndex = index; // Nastaví index prehrávanej skladby na kliknutý index
+        details.append(title, artist);
+        item.append(details);
+        item.addEventListener('click', () => {
+            songIndex = index;
             loadSong(songs[songIndex]);
             playSong();
-            updateActiveSongInPlaylist(); // Aktualizuje zvýraznenie
         });
-        playlistUl.appendChild(listItem);
+        playlistUl.append(item);
     });
-}
 
-// Funkcia na aktualizáciu triedy 'active-song'
-function updateActiveSongInPlaylist() {
-    const allListItems = document.querySelectorAll('.playlist-item');
-    allListItems.forEach((item) => {
-        // Kontrolujeme data-index, aby sme správne porovnali s songIndex
-        if (parseInt(item.getAttribute('data-index')) === songIndex) {
-            item.classList.add('active-song');
-        } else {
-            item.classList.remove('active-song');
-        }
-    });
-    // Voliteľné: Ak sa zoznam zobrazí, scrollujeme k aktuálnej skladbe
-    if (playlistContainer.classList.contains('show')) {
-        const activeItem = document.querySelector('.playlist-item.active-song');
-        if (activeItem) {
-            activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }
+    updateActiveSongInPlaylist();
 }
 
 function togglePlaylist() {
-    playlistContainer.classList.toggle('show');
-    // Keď sa zoznam zobrazí, chceme sa uistiť, že je správne vygenerovaný
-    if (playlistContainer.classList.contains('show')) {
-        displayPlaylist(); // Regeneruje zoznam (aktualizuje active-song a prípadne scroll)
-    }
+    const isVisible = playlistContainer.classList.toggle('show');
+    togglePlaylistBtn.classList.toggle('active', isVisible);
+    if (isVisible) updateActiveSongInPlaylist();
 }
 
-// Event Listeners
-playBtn.addEventListener('click', () => (isPlaying ? pauseSong() : playSong()));
+// Ovládacie prvky a udalosti prehrávača.
+playBtn.addEventListener('click', () => {
+    if (isPlaying) pauseSong();
+    else playSong();
+});
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
-audio.addEventListener('timeupdate', updateProgress);
-audio.addEventListener('ended', () => {
-    if (isRepeating) {
-        playSong(); // Znovu prehrať aktuálnu skladbu
-    } else {
-        nextSong(); // Prejsť na ďalšiu
-    }
-});
 progressContainer.addEventListener('click', setProgress);
 volumeSlider.addEventListener('input', setVolume);
 repeatBtn.addEventListener('click', toggleRepeat);
 shuffleBtn.addEventListener('click', toggleShuffle);
 togglePlaylistBtn.addEventListener('click', togglePlaylist);
 
-// Inicializácia prehrávača s prvou skladbou
+audio.addEventListener('timeupdate', updateProgress);
+audio.addEventListener('loadedmetadata', updateProgress);
+audio.addEventListener('ended', () => {
+    if (!isRepeating) nextSong();
+});
+audio.addEventListener('play', () => setPlayingState(true));
+audio.addEventListener('pause', () => setPlayingState(false));
+audio.addEventListener('error', () => {
+    setPlayingState(false);
+    console.warn('Skladbu sa nepodarilo načítať:', audio.currentSrc);
+});
+
+// Obnovenie poslednej nastavenej hlasitosti, ak ju prehliadač umožňuje uložiť.
+try {
+    const savedVolume = localStorage.getItem('musicplayer-volume');
+    if (savedVolume !== null) {
+        const volume = Math.min(1, Math.max(0, Number(savedVolume)));
+        audio.volume = volume;
+        volumeSlider.value = String(volume);
+    }
+} catch (error) {
+    // localStorage nie je dostupné – použije sa predvolená hlasitosť.
+}
+
+audio.volume = Number.isFinite(audio.volume) ? audio.volume : 1;
 loadSong(songs[songIndex]);
 displayPlaylist();
-
-// Pridanie štýlu pre rotujúci obal albumu pri prehrávaní (do CSS by sa to hodilo)
-// Pridajte toto do style.css pre .player-container.playing .song-image img
-/*
-.player-container.playing .song-image img {
-    animation: rotate 10s linear infinite;
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-*/
