@@ -212,24 +212,29 @@ body { overflow-x: hidden; }
 .playlist-backdrop.show { opacity: 1; visibility: visible; }
 
 .playlist-container {
-    position: fixed; z-index: 20; top: 18px; right: 18px;
-    width: min(390px, calc(100vw - 36px));
-    height: min(760px, calc(100dvh - 36px));
+    position: fixed; z-index: 20;
+    top: var(--playlist-top, 18px);
+    left: var(--playlist-left, 50%);
+    width: min(390px, calc(100vw - var(--playlist-left, 50%) - 12px));
+    height: var(--playlist-height, min(760px, calc(100dvh - 36px)));
+    max-height: calc(100dvh - var(--playlist-top, 18px) - 12px);
     display: flex; flex-direction: column;
     margin: 0; padding: 22px 20px 16px;
     overflow: hidden;
     color: #fff; background: #295e47;
     border: 1px solid rgba(255,255,255,.13);
-    border-radius: 15px;
-    box-shadow: 0 18px 55px rgba(0,0,0,.38);
-    transform: translateX(calc(100% + 24px));
+    border-left: 0;
+    border-radius: 0 15px 15px 0;
+    box-shadow: 12px 18px 38px rgba(0,0,0,.28);
+    transform: translateX(-12px);
     opacity: 0; visibility: hidden; pointer-events: none;
-    transition: transform .28s ease, opacity .2s ease, visibility .28s ease;
+    transition: transform .24s ease, opacity .2s ease, visibility .24s ease;
 }
 .playlist-container.show {
     transform: translateX(0); opacity: 1; visibility: visible;
     pointer-events: auto;
 }
+
 .playlist-header {
     display: flex; align-items: center; justify-content: space-between;
     gap: 14px; margin-bottom: 18px; text-align: left;
@@ -312,11 +317,12 @@ body { overflow-x: hidden; }
 .favorite-btn:hover, .favorite-btn.is-favorite { color: #ff8b7f; }
 .playlist-empty { padding: 24px 8px; color: #e0ebe5; font-size: .82rem; text-align: center; }
 body.playlist-open { overflow: hidden; }
+body.playlist-open .player-container { border-top-right-radius: 0; border-bottom-right-radius: 0; }
 
 @media (max-width: 480px) {
     .playlist-container {
-        top: 10px; right: 10px; width: calc(100vw - 20px);
-        height: calc(100dvh - 20px); padding: 18px 15px 12px;
+        width: min(340px, calc(100vw - var(--playlist-left, 50%) - 8px));
+        padding: 18px 14px 12px;
     }
 }
 @media (prefers-reduced-motion: reduce) {
