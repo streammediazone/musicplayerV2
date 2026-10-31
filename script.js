@@ -17,6 +17,20 @@ const songNumberEl = document.getElementById('song-number');
 const togglePlaylistBtn = document.getElementById('toggle-playlist-btn');
 const playlistContainer = document.getElementById('playlist-container');
 const playlistUl = document.getElementById('playlist');
+const playlistBackdrop = document.getElementById('playlist-backdrop');
+const closePlaylistBtn = document.getElementById('close-playlist-btn');
+const playlistSearch = document.getElementById('playlist-search');
+const playlistCount = document.getElementById('playlist-count');
+const playlistEmpty = document.getElementById('playlist-empty');
+const favoritesFilterBtn = document.getElementById('favorites-filter');
+
+let favoriteSongs = new Set();
+let showFavoritesOnly = false;
+try {
+    favoriteSongs = new Set(JSON.parse(localStorage.getItem('musicplayer-favorites') || '[]'));
+} catch (error) {
+    favoriteSongs = new Set();
+}
 
 // Zoznam skladieb – názvy súborov zodpovedajú obsahu priečinka hudba/.
 const songs = [
@@ -214,6 +228,8 @@ function updateActiveSongInPlaylist() {
     playlistUl.querySelectorAll('.playlist-item').forEach((item) => {
         const active = Number(item.dataset.index) === songIndex;
         item.classList.toggle('active-song', active);
+        const number = item.querySelector('.playlist-track-number');
+        if (number) number.textContent = active && isPlaying ? '♫' : String(Number(item.dataset.index) + 1);
         if (active && playlistContainer.classList.contains('show')) {
             item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -246,6 +262,7 @@ function setPlayingState(playing) {
     playerContainer.classList.toggle('playing', playing);
     document.querySelector('.song-image').classList.toggle('pulsing', playing);
     playBtn.title = playing ? 'Pozastaviť' : 'Prehrať';
+    if (playlistContainer.classList.contains('show')) updateActiveSongInPlaylist();
 }
 
 async function playSong() {
@@ -351,40 +368,93 @@ function toggleShuffle() {
     updateSongNumber();
 }
 
-function displayPlaylist() {
-    playlistUl.replaceChildren();
+function saveFavorites() {
+    try { localStorage.setItem('musicplayer-favorites', JSON.stringify([...favoriteSongs])); }
+    catch (error) { /* Obľúbené zostanú dostupné počas aktuálnej relácie. */ }
+}
 
-    songs.forEach((song, index) => {
+function renderPlaylist() {
+    const query = playlistSearch.value.trim().toLocaleLowerCase('sk');
+    const visibleSongs = songs.map((song, index) => ({ song, index })).filter(({ song, index }) => {
+        const matchesQuery = `${song.title} ${song.artist}`.toLocaleLowerCase('sk').includes(query);
+        return matchesQuery && (!showFavoritesOnly || favoriteSongs.has(index));
+    });
+
+    playlistUl.replaceChildren();
+    visibleSongs.forEach(({ song, index }) => {
         const item = document.createElement('li');
         item.className = 'playlist-item';
         item.dataset.index = String(index);
+        item.classList.toggle('active-song', index === songIndex);
+
+        const number = document.createElement('span');
+        number.className = 'playlist-track-number';
+        number.textContent = index === songIndex && isPlaying ? '♫' : String(index + 1);
 
         const details = document.createElement('div');
         details.className = 'song-item-title';
-
         const title = document.createElement('strong');
         title.textContent = song.title;
         const artist = document.createElement('span');
         artist.textContent = song.artist;
-        artist.style.display = 'block';
-
         details.append(title, artist);
-        item.append(details);
+
+        const favoriteBtn = document.createElement('button');
+        favoriteBtn.type = 'button';
+        favoriteBtn.className = `favorite-btn${favoriteSongs.has(index) ? ' is-favorite' : ''}`;
+        favoriteBtn.setAttribute('aria-label', favoriteSongs.has(index) ? 'Odobrať z obľúbených' : 'Pridať medzi obľúbené');
+        favoriteBtn.setAttribute('aria-pressed', String(favoriteSongs.has(index)));
+        const heart = document.createElement('i');
+        heart.className = `${favoriteSongs.has(index) ? 'fas' : 'far'} fa-heart`;
+        heart.setAttribute('aria-hidden', 'true');
+        favoriteBtn.append(heart);
+        favoriteBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            if (favoriteSongs.has(index)) favoriteSongs.delete(index);
+            else favoriteSongs.add(index);
+            saveFavorites();
+            renderPlaylist();
+        });
+
+        item.append(number, details, favoriteBtn);
         item.addEventListener('click', () => {
             songIndex = index;
             loadSong(songs[songIndex]);
             playSong();
+            renderPlaylist();
         });
         playlistUl.append(item);
     });
 
+    playlistCount.textContent = `${visibleSongs.length} / ${songs.length} skladieb`;
+    playlistEmpty.hidden = visibleSongs.length > 0;
     updateActiveSongInPlaylist();
 }
 
+function displayPlaylist() { renderPlaylist(); }
+
+function openPlaylist() {
+    playlistContainer.classList.add('show');
+    playlistBackdrop.classList.add('show');
+    togglePlaylistBtn.classList.add('active');
+    playlistContainer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('playlist-open');
+    renderPlaylist();
+    closePlaylistBtn.focus();
+}
+
+function closePlaylist() {
+    playlistContainer.classList.remove('show');
+    playlistBackdrop.classList.remove('show');
+    togglePlaylistBtn.classList.remove('active');
+    playlistContainer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('playlist-open');
+    togglePlaylistBtn.focus();
+}
+
 function togglePlaylist() {
-    const isVisible = playlistContainer.classList.toggle('show');
-    togglePlaylistBtn.classList.toggle('active', isVisible);
-    if (isVisible) updateActiveSongInPlaylist();
+    if (playlistContainer.classList.contains('show')) closePlaylist();
+    else openPlaylist();
 }
 
 // Ovládacie prvky a udalosti prehrávača.
@@ -399,6 +469,34 @@ volumeSlider.addEventListener('input', setVolume);
 repeatBtn.addEventListener('click', toggleRepeat);
 shuffleBtn.addEventListener('click', toggleShuffle);
 togglePlaylistBtn.addEventListener('click', togglePlaylist);
+closePlaylistBtn.addEventListener('click', closePlaylist);
+playlistBackdrop.addEventListener('click', closePlaylist);
+playlistSearch.addEventListener('input', renderPlaylist);
+favoritesFilterBtn.addEventListener('click', () => {
+    showFavoritesOnly = !showFavoritesOnly;
+    favoritesFilterBtn.classList.toggle('active', showFavoritesOnly);
+    favoritesFilterBtn.setAttribute('aria-pressed', String(showFavoritesOnly));
+    renderPlaylist();
+});
+
+document.addEventListener('keydown', (event) => {
+    const target = event.target;
+    const typing = target instanceof HTMLElement &&
+        (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+    if (event.key === 'Escape' && playlistContainer.classList.contains('show')) {
+        closePlaylist();
+        return;
+    }
+    if (typing || event.altKey || event.ctrlKey || event.metaKey) return;
+    if (event.code === 'Space') {
+        event.preventDefault();
+        if (isPlaying) pauseSong(); else playSong();
+    } else if (event.code === 'ArrowRight') {
+        if (Number.isFinite(audio.duration)) audio.currentTime = Math.min(audio.duration, audio.currentTime + 5);
+    } else if (event.code === 'ArrowLeft') {
+        audio.currentTime = Math.max(0, audio.currentTime - 5);
+    }
+});
 
 audio.addEventListener('timeupdate', updateProgress);
 audio.addEventListener('loadedmetadata', updateProgress);
