@@ -503,39 +503,59 @@ try {
 applyPlayerTheme(activeThemeIndex, false);
 
 
-/* Prepínanie celkového dizajnu prehrávača – nezávisle od farebnej témy. */
+/* Výber celkového dizajnu prehrávača. */
 const playerSkins = [
     { id: 'midnight-glass', label: 'Midnight Glass' },
     { id: 'neon-cyber', label: 'Neon Cyber' },
     { id: 'vinyl-retro', label: 'Vinyl Retro' },
-    { id: 'minimal-studio', label: 'Minimal Studio' }
+    { id: 'minimal-studio', label: 'Minimal Studio' },
+    { id: 'liquid-glass', label: 'Liquid Glass' },
+    { id: 'modern-dashboard', label: 'Modern Dashboard' }
 ];
-let activeSkinIndex = 0;
+const skinPickerBackdrop = document.getElementById('skin-picker-backdrop');
+const skinPickerClose = document.getElementById('skin-picker-close');
+const skinOptions = document.getElementById('skin-options');
+let activeSkinId = 'midnight-glass';
+let skinPickerReturnFocus = null;
 
-function applyPlayerSkin(index, persist = true) {
-    activeSkinIndex = (index + playerSkins.length) % playerSkins.length;
-    const skin = playerSkins[activeSkinIndex];
+function updateSkinPickerSelection() {
+    skinOptions.querySelectorAll('[data-skin-choice]').forEach((option) => {
+        const selected = option.dataset.skinChoice === activeSkinId;
+        option.classList.toggle('selected', selected);
+        option.setAttribute('aria-pressed', String(selected));
+    });
+}
+
+function applyPlayerSkin(skinId, persist = true) {
+    const skin = playerSkins.find(item => item.id === skinId) || playerSkins[0];
+    activeSkinId = skin.id;
     document.documentElement.dataset.skin = skin.id;
-    skinToggle.title = `Dizajn: ${skin.label} – kliknutím zmeniť`;
-    skinToggle.setAttribute('aria-label', `Aktuálny dizajn: ${skin.label}. Zmeniť dizajn`);
+    skinToggle.title = `Dizajn: ${skin.label}`;
+    skinToggle.setAttribute('aria-label', `Vybraný dizajn: ${skin.label}. Otvoriť výber dizajnu`);
+    updateSkinPickerSelection();
     if (persist) {
         try { localStorage.setItem('musicplayer-skin', skin.id); }
         catch (error) { /* Dizajn zostane aktívny do obnovenia stránky. */ }
     }
 }
 
-function cyclePlayerSkin() {
-    applyPlayerSkin(activeSkinIndex + 1);
+function openSkinPicker() {
+    skinPickerReturnFocus = document.activeElement;
+    skinPickerBackdrop.hidden = false;
+    skinPickerClose.focus();
+}
+
+function closeSkinPicker() {
+    if (skinPickerBackdrop.hidden) return;
+    skinPickerBackdrop.hidden = true;
+    if (skinPickerReturnFocus instanceof HTMLElement) skinPickerReturnFocus.focus();
 }
 
 try {
     const savedSkin = localStorage.getItem('musicplayer-skin');
-    const savedSkinIndex = playerSkins.findIndex(skin => skin.id === savedSkin);
-    if (savedSkinIndex >= 0) activeSkinIndex = savedSkinIndex;
-} catch (error) {
-    // Použije sa predvolený dizajn.
-}
-applyPlayerSkin(activeSkinIndex, false);
+    if (playerSkins.some(skin => skin.id === savedSkin)) activeSkinId = savedSkin;
+} catch (error) { /* Použije sa predvolený dizajn. */ }
+applyPlayerSkin(activeSkinId, false);
 
 // Ovládacie prvky a udalosti prehrávača.
 playBtn.addEventListener('click', () => {
@@ -550,7 +570,15 @@ repeatBtn.addEventListener('click', toggleRepeat);
 shuffleBtn.addEventListener('click', toggleShuffle);
 togglePlaylistBtn.addEventListener('click', togglePlaylist);
 themeToggle.addEventListener('click', cyclePlayerTheme);
-skinToggle.addEventListener('click', cyclePlayerSkin);
+skinToggle.addEventListener('click', openSkinPicker);
+skinPickerClose.addEventListener('click', closeSkinPicker);
+skinPickerBackdrop.addEventListener('click', (event) => {
+    if (event.target === skinPickerBackdrop) closeSkinPicker();
+});
+skinOptions.addEventListener('click', (event) => {
+    const option = event.target.closest('[data-skin-choice]');
+    if (option) applyPlayerSkin(option.dataset.skinChoice);
+});
 closePlaylistBtn.addEventListener('click', closePlaylist);
 playlistBackdrop.addEventListener('click', closePlaylist);
 playlistSearch.addEventListener('input', renderPlaylist);
@@ -565,6 +593,10 @@ document.addEventListener('keydown', (event) => {
     const target = event.target;
     const typing = target instanceof HTMLElement &&
         (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+    if (event.key === 'Escape' && !skinPickerBackdrop.hidden) {
+        closeSkinPicker();
+        return;
+    }
     if (event.key === 'Escape' && playlistContainer.classList.contains('show')) {
         closePlaylist();
         return;
