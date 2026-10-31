@@ -760,3 +760,110 @@ body {
 @media (prefers-reduced-motion:reduce) {
     :root[data-skin="vinyl-retro"] .song-image img { animation:none !important; }
 }
+
+
+/* Galéria dizajnov prehrávača. */
+.skin-picker-backdrop {
+ position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;
+ background:rgba(3,7,14,.74);backdrop-filter:blur(10px);
+}
+.skin-picker-backdrop[hidden] { display:none; }
+.skin-picker {
+ width:min(680px,100%);max-height:calc(100dvh - 40px);overflow:auto;padding:26px;
+ border:1px solid rgba(255,255,255,.14);border-radius:24px;
+ background:linear-gradient(145deg,#202a3b,#111824);color:#f4f6fb;
+ box-shadow:0 30px 90px rgba(0,0,0,.55);
+}
+.skin-picker-header { display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px;text-align:left; }
+.skin-picker-eyebrow { margin:0 0 6px;color:#9daec7;font-size:.66rem;font-weight:700;letter-spacing:.16em; }
+.skin-picker-header h2 { margin:0;color:#f4f6fb;font-size:1.65rem;letter-spacing:-.04em; }
+.skin-picker-subtitle { margin:7px 0 0;color:#aab5c7;font-size:.82rem; }
+.skin-picker-close {
+ display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;
+ border:1px solid rgba(255,255,255,.15);border-radius:50%;
+ background:rgba(255,255,255,.07);color:#f4f6fb;cursor:pointer;
+}
+.skin-picker-close:hover { background:rgba(255,255,255,.15); }
+.skin-options { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px; }
+.skin-option {
+ position:relative;display:flex;align-items:center;gap:13px;min-width:0;padding:11px;
+ border:1px solid rgba(255,255,255,.1);border-radius:15px;
+ background:rgba(255,255,255,.045);color:#f4f6fb;text-align:left;cursor:pointer;
+ transition:border-color .2s,background .2s,transform .2s;
+}
+.skin-option:hover { transform:translateY(-2px);background:rgba(255,255,255,.08); }
+.skin-option.selected { border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent-soft); }
+.skin-option:focus-visible,.skin-picker-close:focus-visible { outline:2px solid var(--accent);outline-offset:3px; }
+.skin-preview { position:relative;display:block;width:76px;height:62px;flex:0 0 76px;overflow:hidden;border-radius:10px;background:#101827; }
+.skin-preview span { position:absolute;left:9px;top:7px;width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#a78bfa,#38466b); }
+.skin-preview i { position:absolute;left:49px;top:13px;width:17px;height:4px;border-radius:4px;background:rgba(255,255,255,.8); }
+.skin-preview b { position:absolute;left:9px;right:9px;bottom:9px;height:5px;border-radius:5px;background:rgba(255,255,255,.35); }
+.preview-neon { background:#050a13;border:1px solid #31e7f2;box-shadow:inset 0 0 12px rgba(49,231,242,.22); }
+.preview-neon span { border-radius:2px;background:#102c3b;border:1px solid #31e7f2;box-shadow:0 0 8px #31e7f2; }
+.preview-neon i { background:#ff4bd8;box-shadow:0 0 7px #ff4bd8; }
+.preview-vinyl { background:#332318; }
+.preview-vinyl span { border-radius:50%;background:repeating-radial-gradient(circle,#171717 0 2px,#555 3px 4px);border:5px solid #171717; }
+.preview-vinyl i { background:#d9a66d; }
+.preview-minimal { background:#e9edf2;border:1px solid #c6ced8; }
+.preview-minimal span { border-radius:5px;background:linear-gradient(135deg,#8997a8,#c5ccd5); }
+.preview-minimal i { background:#536174; }
+.preview-liquid { background:linear-gradient(135deg,#315b78,#172c49 55%,#6a789d); }
+.preview-liquid span { background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(127,204,255,.16));border:1px solid rgba(255,255,255,.7); }
+.preview-liquid i { background:#d8f2ff;box-shadow:0 0 10px rgba(216,242,255,.8); }
+.preview-dashboard { background:#101923;border:1px solid #42566a; }
+.preview-dashboard span { width:19px;height:38px;top:8px;border-radius:4px;background:#24394a;border:1px solid #5e8497; }
+.preview-dashboard i { left:35px;top:13px;width:31px;background:#6ee7c0; }
+.preview-dashboard b { left:35px;right:9px;bottom:13px;height:16px;border-radius:4px;background:repeating-linear-gradient(90deg,#527b8b 0 4px,transparent 4px 7px); }
+.skin-option-copy { display:flex;flex:1;min-width:0;flex-direction:column;gap:4px; }
+.skin-option-copy strong { font-size:.84rem;font-weight:650; }
+.skin-option-copy small { color:#aab5c7;font-size:.7rem;line-height:1.35; }
+.skin-option-check { display:none;color:var(--accent);font-size:.85rem; }
+.skin-option.selected .skin-option-check { display:block; }
+
+/* Liquid Glass – priesvitné vrstvy, rozostrenie a svetelné odlesky. */
+:root[data-skin="liquid-glass"] body {
+ background:radial-gradient(ellipse at 15% 15%,rgba(92,177,255,.35),transparent 42%),
+ radial-gradient(ellipse at 85% 80%,rgba(190,139,255,.25),transparent 40%),
+ linear-gradient(135deg,#101d36,#253e5c 55%,#18243f);
+}
+:root[data-skin="liquid-glass"] .player-container {
+ border:1px solid rgba(255,255,255,.3);border-radius:30px;
+ background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.055));
+ box-shadow:0 25px 80px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.38);
+ backdrop-filter:blur(28px) saturate(150%);
+}
+:root[data-skin="liquid-glass"] .song-image { border-radius:24px;outline:1px solid rgba(255,255,255,.3);box-shadow:0 16px 38px rgba(0,0,0,.25); }
+:root[data-skin="liquid-glass"] .controls .main-button {
+ border:1px solid rgba(255,255,255,.4);background:linear-gradient(145deg,rgba(255,255,255,.9),var(--accent));
+ box-shadow:0 8px 28px var(--accent-soft),inset 0 1px 0 white;
+}
+:root[data-skin="liquid-glass"] .playlist-container {
+ background:linear-gradient(145deg,rgba(45,68,98,.92),rgba(19,31,52,.94));
+ border-color:rgba(255,255,255,.22);backdrop-filter:blur(26px) saturate(145%);
+}
+
+/* Modern Dashboard – kompaktný vzhľad audio konzoly. */
+:root[data-skin="modern-dashboard"] body { background:linear-gradient(145deg,#0b1119,#172431 55%,#0c151e); }
+:root[data-skin="modern-dashboard"] .player-container {
+ border-radius:14px;border:1px solid #34495a;background:linear-gradient(160deg,#1d2b38,#111b25);
+ box-shadow:0 24px 65px rgba(0,0,0,.42);
+}
+:root[data-skin="modern-dashboard"] .song-image { border-radius:10px;outline:1px solid #425a6b;box-shadow:0 10px 25px rgba(0,0,0,.3); }
+:root[data-skin="modern-dashboard"] #song-number {
+ display:inline-block;padding:5px 9px;border:1px solid #3b5262;border-radius:5px;
+ background:#15232e;color:#8da9b8;font-variant-numeric:tabular-nums;
+}
+:root[data-skin="modern-dashboard"] .progress-container { height:7px;border-radius:3px;background:#30414e; }
+:root[data-skin="modern-dashboard"] .progress { border-radius:3px; }
+:root[data-skin="modern-dashboard"] .controls .main-button { border-radius:10px; }
+:root[data-skin="modern-dashboard"] .playback-options { border-top:1px solid #34495a;background:rgba(5,12,19,.18); }
+:root[data-skin="modern-dashboard"] .playlist-container { background:#14212c;border-color:#34495a;border-radius:0 14px 14px 0; }
+
+@media (max-width:600px) {
+ .skin-picker { padding:20px 16px;border-radius:19px; }
+ .skin-options { grid-template-columns:1fr;gap:9px; }
+ .skin-option { padding:9px; }
+ .skin-preview { width:68px;height:56px;flex-basis:68px; }
+ .skin-picker-header h2 { font-size:1.4rem; }
+}
+@media (prefers-reduced-motion:reduce) { .skin-option { transition:none; } }
