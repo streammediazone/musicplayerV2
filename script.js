@@ -473,7 +473,11 @@ const playerThemes = [
     { id: 'midnight', label: 'Midnight' },
     { id: 'ocean', label: 'Ocean' },
     { id: 'emerald', label: 'Emerald' },
-    { id: 'sunset', label: 'Sunset' }
+    { id: 'sunset', label: 'Sunset' },
+    { id: 'arctic', label: 'Arctic' },
+    { id: 'rose', label: 'Rose' },
+    { id: 'solar', label: 'Solar' },
+    { id: 'graphite', label: 'Graphite' }
 ];
 let activeThemeIndex = 0;
 
