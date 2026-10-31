@@ -376,13 +376,13 @@ function saveFavorites() {
 function normalizeSearchText(value) {
     return String(value)
         .normalize('NFD')
-        .replace(/[\\u0300-\\u036f]/g, '')
+        .replace(/[\u0300-\u036f]/g, '')
         .toLocaleLowerCase();
 }
 
 function renderPlaylist() {
     const query = normalizeSearchText(playlistSearch.value.trim());
-    const searchTerms = query.split(/\\s+/).filter(Boolean);
+    const searchTerms = query.split(/\s+/).filter(Boolean);
     const visibleSongs = songs.map((song, index) => ({ song, index })).filter(({ song, index }) => {
         const searchableText = normalizeSearchText(`${song.title} ${song.artist} ${song.name}`);
         const matchesQuery = searchTerms.every(term => searchableText.includes(term));
