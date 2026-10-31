@@ -568,8 +568,31 @@ body {
 .playback-options { margin-top:18px;padding-top:16px;border-top:1px solid var(--panel-border); }
 .playback-options i { color:var(--muted);font-size:1.05rem;padding:8px;border-radius:10px; }
 .playback-options i:hover,.playback-options i.active { color:var(--accent);background:var(--accent-soft); }
-.theme-toggle { outline:none; }
-.theme-toggle:focus-visible { box-shadow:0 0 0 3px var(--accent-soft); }
+.playback-options .theme-toggle {
+    appearance:none;
+    -webkit-appearance:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    vertical-align:middle;
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    font:inherit;
+    font-size:1.05rem;
+    padding:8px;
+    border-radius:10px;
+    cursor:pointer;
+    line-height:1;
+    outline:none;
+    transition:color .2s,background .2s,transform .2s;
+}
+.playback-options .theme-toggle:hover,
+.playback-options .theme-toggle:focus-visible {
+    color:var(--accent);
+    background:var(--accent-soft);
+}
+.playback-options .theme-toggle:focus-visible { box-shadow:0 0 0 3px var(--accent-soft); }
 .playlist-container {
     color:var(--text);
     background:linear-gradient(155deg,var(--surface-raised),var(--surface));
