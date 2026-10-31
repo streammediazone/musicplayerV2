@@ -1099,3 +1099,207 @@ body {
         aspect-ratio:1;
     }
 }
+
+
+/* Prism Atelier – farebná identita sa odvodzuje od zvolenej farebnej témy. */
+:root[data-skin="minimal-studio"] {
+    --atelier-ink:#17253a;
+    --atelier-paper:color-mix(in srgb, #fffaf0 88%, var(--accent) 12%);
+    --atelier-soft:color-mix(in srgb, #f0e9d9 82%, var(--accent) 18%);
+    --atelier-accent:var(--accent);
+    --atelier-blue:color-mix(in srgb, #2877a8 48%, var(--accent) 52%);
+}
+:root[data-skin="minimal-studio"] body {
+    background-color:var(--atelier-soft);
+    background-image:
+      radial-gradient(circle at 12% 18%,color-mix(in srgb,var(--accent) 22%,transparent) 0 7%,transparent 7.2%),
+      linear-gradient(135deg,transparent 0 48%,color-mix(in srgb,var(--accent) 13%,transparent) 48.2% 49%,transparent 49.2%),
+      repeating-linear-gradient(0deg,rgba(33,43,53,.035) 0 1px,transparent 1px 24px),
+      var(--atelier-soft);
+}
+:root[data-skin="minimal-studio"] .player-container {
+    background:var(--atelier-paper);
+    border-color:var(--atelier-ink);
+    box-shadow:11px 11px 0 var(--atelier-accent),22px 22px 0 rgba(23,37,58,.13);
+    color:var(--atelier-ink);
+}
+:root[data-skin="minimal-studio"] .player-container::before {
+    background:var(--atelier-accent);
+    color:var(--atelier-ink);
+    border-color:var(--atelier-ink);
+}
+:root[data-skin="minimal-studio"] .player-container::after { background:var(--atelier-blue); }
+:root[data-skin="minimal-studio"] .song-image { box-shadow:8px 9px 0 var(--atelier-blue); }
+:root[data-skin="minimal-studio"] #song-artist { color:var(--accent-strong); }
+:root[data-skin="minimal-studio"] .progress-container { background:var(--track);border-color:var(--atelier-ink); }
+:root[data-skin="minimal-studio"] .progress { background:var(--accent); }
+:root[data-skin="minimal-studio"] .controls .main-button {
+    background:var(--accent);color:var(--atelier-ink);border-color:var(--atelier-ink);
+}
+:root[data-skin="minimal-studio"] .volume-container i { color:var(--atelier-ink); }
+:root[data-skin="minimal-studio"] #volume-slider { background:var(--track); }
+:root[data-skin="minimal-studio"] #volume-slider::-webkit-slider-thumb { background:var(--accent); }
+:root[data-skin="minimal-studio"] #volume-slider::-moz-range-thumb { background:var(--accent); }
+:root[data-skin="minimal-studio"] .playback-options { border-top-color:var(--atelier-ink); }
+:root[data-skin="minimal-studio"] .playback-options > i:hover,
+:root[data-skin="minimal-studio"] .playback-options > i.active,
+:root[data-skin="minimal-studio"] .playback-options > button:hover { background:var(--accent);color:var(--atelier-ink); }
+:root[data-skin="minimal-studio"] .playlist-container {
+    background:var(--atelier-paper);border-color:var(--atelier-ink);
+    box-shadow:9px 9px 0 var(--accent);
+}
+:root[data-skin="minimal-studio"] .playlist-list li.active-song {
+    background:color-mix(in srgb,var(--accent) 24%,var(--atelier-paper));
+    box-shadow:inset 4px 0 var(--accent);
+}
+:root[data-skin="minimal-studio"] .playlist-search {
+    background:var(--atelier-soft);border-color:color-mix(in srgb,var(--atelier-ink) 25%,transparent);
+}
+
+/* Vinyl Retro – gramofónový deck s platňou, štítkom, ramenom a analógovou typografiou.
+   Teplý základ zachováva retro charakter; zvýraznenia reagujú na vybranú farebnú tému. */
+:root[data-skin="vinyl-retro"] {
+    --vinyl-wood:#3a261b;
+    --vinyl-deck:#21160f;
+    --vinyl-paper:#ead8b8;
+    --vinyl-ink:#2c1c12;
+    --vinyl-highlight:var(--accent);
+    --vinyl-muted:#bca17e;
+}
+:root[data-skin="vinyl-retro"] body {
+    background:
+      radial-gradient(ellipse at 50% 8%,color-mix(in srgb,var(--accent) 23%,transparent),transparent 40%),
+      repeating-linear-gradient(115deg,rgba(226,181,126,.035) 0 2px,transparent 2px 9px),
+      linear-gradient(135deg,#120d09,#2c1b12 52%,#100c09);
+}
+:root[data-skin="vinyl-retro"] .player-container {
+    position:relative;
+    overflow:visible;
+    padding:48px 28px 25px;
+    border:2px solid color-mix(in srgb,var(--accent) 52%,#8b6748);
+    border-radius:24px 24px 15px 15px;
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.055),transparent 38%),
+      repeating-linear-gradient(0deg,rgba(255,220,170,.025) 0 1px,transparent 1px 5px),
+      linear-gradient(145deg,#493020,#24170f 72%);
+    box-shadow:0 24px 65px rgba(0,0,0,.55),inset 0 2px 0 rgba(255,225,180,.12),inset 0 -5px 12px rgba(0,0,0,.25);
+}
+:root[data-skin="vinyl-retro"] .player-container::before {
+    content:"♫  THE ANALOGUE SOUND  •  STEREO";
+    position:absolute;top:13px;left:0;right:0;
+    color:var(--vinyl-highlight);
+    font:700 .62rem/1.2 Georgia,serif;
+    letter-spacing:.2em;text-align:center;
+    text-shadow:0 0 12px color-mix(in srgb,var(--accent) 45%,transparent);
+}
+:root[data-skin="vinyl-retro"] .player-container::after {
+    content:"";
+    position:absolute;z-index:3;
+    width:7px;height:105px;
+    top:105px;right:31px;
+    border-radius:8px;
+    background:linear-gradient(90deg,#806044,#e3c18e,#6f5037);
+    box-shadow:0 2px 5px rgba(0,0,0,.6);
+    transform:rotate(-24deg);
+    transform-origin:top center;
+    pointer-events:none;
+}
+:root[data-skin="vinyl-retro"] .song-image {
+    position:relative;
+    width:260px;height:260px;
+    margin:4px auto 25px;
+    padding:13px;
+    border:1px solid color-mix(in srgb,var(--accent) 55%,#9a7955);
+    border-radius:50%;
+    background:
+      repeating-radial-gradient(circle,#0a0a0a 0 1px,#29231e 2px 3px,#111 4px 5px),
+      #111;
+    box-shadow:0 0 0 5px #17100b,0 0 0 7px color-mix(in srgb,var(--accent) 48%,#77583c),0 15px 28px rgba(0,0,0,.6);
+}
+:root[data-skin="vinyl-retro"] .song-image img {
+    border:7px solid #17100b;
+    border-radius:50%;
+    box-shadow:0 0 0 1px rgba(239,205,157,.35),inset 0 0 0 2px rgba(0,0,0,.2);
+    animation:vinyl-spin 18s linear infinite paused;
+}
+:root[data-skin="vinyl-retro"] .player-container.playing .song-image img { animation-play-state:running; }
+:root[data-skin="vinyl-retro"] #song-title {
+    color:#f1dfc2;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:1.7rem;font-weight:600;letter-spacing:.015em;
+    text-shadow:0 2px 0 #120c08;
+}
+:root[data-skin="vinyl-retro"] #song-artist {
+    color:var(--vinyl-highlight);
+    font-family:Georgia,serif;font-style:italic;letter-spacing:.08em;
+}
+:root[data-skin="vinyl-retro"] .song-info {
+    color:#e8d3ae;background:rgba(0,0,0,.25);
+    border:1px solid rgba(225,190,143,.25);
+    border-radius:4px;padding:4px 9px;
+    font-family:Georgia,serif;letter-spacing:.08em;
+}
+:root[data-skin="vinyl-retro"] .progress-container {
+    height:7px;border:1px solid rgba(231,198,157,.35);
+    border-radius:1px;background:rgba(0,0,0,.48);
+}
+:root[data-skin="vinyl-retro"] .progress {
+    border-radius:0;background:var(--vinyl-highlight);
+    box-shadow:0 0 10px color-mix(in srgb,var(--accent) 55%,transparent);
+}
+:root[data-skin="vinyl-retro"] .duration-wrapper,
+:root[data-skin="vinyl-retro"] .controls i,
+:root[data-skin="vinyl-retro"] .volume-container i { color:#e4cfad; }
+:root[data-skin="vinyl-retro"] .controls .main-button {
+    width:58px;height:58px;
+    border:2px solid var(--vinyl-highlight);
+    border-radius:50%;
+    background:linear-gradient(145deg,#ead8b8,#b68c5b);
+    color:#24170f;
+    box-shadow:0 0 0 4px rgba(0,0,0,.24),0 4px 10px rgba(0,0,0,.4);
+}
+:root[data-skin="vinyl-retro"] .controls .main-button:hover {
+    transform:scale(1.06);
+    box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 24%,transparent),0 5px 13px rgba(0,0,0,.5);
+}
+:root[data-skin="vinyl-retro"] #volume-slider { background:rgba(0,0,0,.45); }
+:root[data-skin="vinyl-retro"] #volume-slider::-webkit-slider-thumb { background:var(--vinyl-highlight); }
+:root[data-skin="vinyl-retro"] #volume-slider::-moz-range-thumb { background:var(--vinyl-highlight); }
+:root[data-skin="vinyl-retro"] .playback-options {
+    border-top:1px solid rgba(225,190,143,.25);
+}
+:root[data-skin="vinyl-retro"] .playback-options > i,
+:root[data-skin="vinyl-retro"] .playback-options > button { color:#e4cfad; }
+:root[data-skin="vinyl-retro"] .playback-options > i.active,
+:root[data-skin="vinyl-retro"] .playback-options > i:hover,
+:root[data-skin="vinyl-retro"] .playback-options > button:hover {
+    color:var(--vinyl-highlight);background:color-mix(in srgb,var(--accent) 15%,transparent);
+}
+:root[data-skin="vinyl-retro"] .playlist-container {
+    color:#f1dfc2;
+    background:linear-gradient(145deg,#382719,#21160f);
+    border:1px solid color-mix(in srgb,var(--accent) 42%,#8b6748);
+    box-shadow:12px 18px 38px rgba(0,0,0,.38);
+}
+:root[data-skin="vinyl-retro"] .playlist-header h2,
+:root[data-skin="vinyl-retro"] .playlist-list .song-item-title strong { color:#f1dfc2; }
+:root[data-skin="vinyl-retro"] .playlist-eyebrow,
+:root[data-skin="vinyl-retro"] .playlist-count,
+:root[data-skin="vinyl-retro"] .playlist-list .song-item-title span { color:#c7ad8a; }
+:root[data-skin="vinyl-retro"] .playlist-search {
+    background:rgba(0,0,0,.22);border-color:rgba(225,190,143,.28);
+}
+:root[data-skin="vinyl-retro"] .playlist-search input { color:#f1dfc2; }
+:root[data-skin="vinyl-retro"] .playlist-list li.active-song {
+    background:color-mix(in srgb,var(--accent) 20%,#382719);
+    box-shadow:inset 4px 0 var(--vinyl-highlight);
+}
+:root[data-skin="vinyl-retro"] .favorite-btn.is-favorite { color:var(--vinyl-highlight); }
+
+@media (max-width:760px) {
+    :root[data-skin="vinyl-retro"] .player-container { padding:45px 20px 22px; }
+    :root[data-skin="vinyl-retro"] .song-image {
+        width:min(260px,72vw);height:auto;aspect-ratio:1;
+    }
+    :root[data-skin="vinyl-retro"] .player-container::after { right:18px;top:95px;height:85px; }
+}
