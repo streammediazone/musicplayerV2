@@ -215,9 +215,10 @@ body { overflow-x: hidden; }
 .playlist-container {
     position: absolute; z-index: 20;
     top: 0;
+    bottom: 0;
     left: 100%;
     width: min(390px, max(280px, calc(100vw - 374px)));
-    height: 100%;
+    height: auto;
     max-height: none;
     display: flex; flex-direction: column;
     margin: 0; padding: 22px 20px 16px;
