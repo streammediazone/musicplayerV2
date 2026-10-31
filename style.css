@@ -933,3 +933,169 @@ body {
 :root[data-theme="arctic"] .playlist-list .song-item-title strong { color:#172b40; }
 :root[data-theme="arctic"] .playlist-search { background:#e8f0f6;border-color:#cbd9e5; }
 :root[data-theme="arctic"] .playlist-search input { color:#172b40; }
+
+
+/* Prism Atelier – odvážny editorial/Bauhaus smer namiesto minimalistického vzhľadu. */
+:root[data-skin="minimal-studio"] body {
+    background-color:#f0e9d9;
+    background-image:
+      radial-gradient(circle at 12% 18%,rgba(236,83,58,.18) 0 7%,transparent 7.2%),
+      linear-gradient(135deg,transparent 0 48%,rgba(27,55,91,.08) 48.2% 49%,transparent 49.2%),
+      repeating-linear-gradient(0deg,rgba(33,43,53,.035) 0 1px,transparent 1px 24px),
+      #f0e9d9;
+    color:#17253a;
+}
+:root[data-skin="minimal-studio"] .player-container {
+    position:relative;
+    isolation:isolate;
+    overflow:visible;
+    border:2px solid #17253a;
+    border-radius:3px;
+    padding:31px 27px 25px;
+    background:#fffaf0;
+    color:#17253a;
+    box-shadow:11px 11px 0 #ed6048,22px 22px 0 rgba(23,37,58,.13);
+    backdrop-filter:none;
+}
+:root[data-skin="minimal-studio"] .player-container::before {
+    content:"STEREO / EDITION 01";
+    position:absolute;
+    z-index:2;
+    top:0;left:0;right:0;
+    height:27px;
+    display:flex;
+    align-items:center;
+    padding:0 13px;
+    border-bottom:2px solid #17253a;
+    background:#f6c94a;
+    color:#17253a;
+    font:800 .61rem/1.1 Arial,sans-serif;
+    letter-spacing:.2em;
+}
+:root[data-skin="minimal-studio"] .player-container::after {
+    content:"";
+    position:absolute;
+    z-index:-1;
+    top:51px;right:-13px;
+    width:26px;height:104px;
+    background:#2877a8;
+    transform:skewY(-28deg);
+}
+:root[data-skin="minimal-studio"] .song-image {
+    width:270px;height:270px;
+    margin-top:22px;
+    margin-bottom:25px;
+    border:5px solid #fff;
+    border-radius:2px;
+    outline:2px solid #17253a;
+    outline-offset:0;
+    transform:rotate(-2deg);
+    box-shadow:8px 9px 0 #2877a8;
+}
+:root[data-skin="minimal-studio"] #song-title {
+    color:#17253a;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:1.8rem;
+    font-weight:700;
+    line-height:1.08;
+    letter-spacing:-.055em;
+}
+:root[data-skin="minimal-studio"] #song-artist {
+    color:#ed6048;
+    font-family:Arial,sans-serif;
+    font-size:.78rem;
+    font-weight:800;
+    letter-spacing:.17em;
+    text-transform:uppercase;
+}
+:root[data-skin="minimal-studio"] .song-info {
+    padding:4px 8px;
+    border:1px solid #17253a;
+    background:#17253a;
+    color:#fffaf0;
+    font:700 .65rem/1.2 Arial,sans-serif;
+    letter-spacing:.12em;
+}
+:root[data-skin="minimal-studio"] .progress-container {
+    height:8px;
+    border:1px solid #17253a;
+    border-radius:0;
+    background:#e3d9c6;
+}
+:root[data-skin="minimal-studio"] .progress {
+    border-radius:0;
+    background:#ed6048;
+}
+:root[data-skin="minimal-studio"] .duration-wrapper {
+    color:#5c6470;
+    font-family:Arial,sans-serif;
+    font-variant-numeric:tabular-nums;
+}
+:root[data-skin="minimal-studio"] .controls i {
+    color:#17253a;
+}
+:root[data-skin="minimal-studio"] .controls .main-button {
+    width:61px;height:61px;
+    border:2px solid #17253a;
+    border-radius:50%;
+    color:#17253a;
+    background:#f6c94a;
+    box-shadow:4px 4px 0 #17253a;
+}
+:root[data-skin="minimal-studio"] .controls .main-button:hover {
+    transform:translate(2px,2px);
+    box-shadow:2px 2px 0 #17253a;
+}
+:root[data-skin="minimal-studio"] .volume-container i { color:#17253a; }
+:root[data-skin="minimal-studio"] #volume-slider { background:#d7cbb5; }
+:root[data-skin="minimal-studio"] #volume-slider::-webkit-slider-thumb { background:#2877a8; }
+:root[data-skin="minimal-studio"] #volume-slider::-moz-range-thumb { background:#2877a8; }
+:root[data-skin="minimal-studio"] .playback-options {
+    border-top:2px solid #17253a;
+}
+:root[data-skin="minimal-studio"] .playback-options > i,
+:root[data-skin="minimal-studio"] .playback-options > button {
+    color:#17253a;
+}
+:root[data-skin="minimal-studio"] .playback-options > i:hover,
+:root[data-skin="minimal-studio"] .playback-options > i.active,
+:root[data-skin="minimal-studio"] .playback-options > button:hover {
+    color:#fffaf0;
+    background:#17253a;
+}
+:root[data-skin="minimal-studio"] .playlist-container {
+    color:#17253a;
+    background:#fffaf0;
+    border:2px solid #17253a;
+    border-radius:3px;
+    box-shadow:9px 9px 0 #ed6048;
+}
+:root[data-skin="minimal-studio"] .playlist-header h2,
+:root[data-skin="minimal-studio"] .playlist-list .song-item-title strong { color:#17253a; }
+:root[data-skin="minimal-studio"] .playlist-eyebrow,
+:root[data-skin="minimal-studio"] .playlist-count,
+:root[data-skin="minimal-studio"] .playlist-list .song-item-title span { color:#69717b; }
+:root[data-skin="minimal-studio"] .playlist-search {
+    background:#f0e9d9;
+    border:1px solid #c8bdab;
+    border-radius:2px;
+}
+:root[data-skin="minimal-studio"] .playlist-search input { color:#17253a; }
+:root[data-skin="minimal-studio"] .playlist-list li.active-song {
+    background:#f6c94a;
+    box-shadow:inset 4px 0 #ed6048;
+}
+:root[data-skin="minimal-studio"] .playlist-list li.active-song .playlist-track-number,
+:root[data-skin="minimal-studio"] .favorite-btn.is-favorite { color:#17253a; }
+
+@media (max-width:760px) {
+    :root[data-skin="minimal-studio"] .player-container {
+        box-shadow:7px 7px 0 #ed6048,14px 14px 0 rgba(23,37,58,.13);
+        padding:29px 20px 22px;
+    }
+    :root[data-skin="minimal-studio"] .song-image {
+        width:min(270px,76vw);
+        height:auto;
+        aspect-ratio:1;
+    }
+}
