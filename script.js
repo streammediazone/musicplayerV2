@@ -514,9 +514,6 @@ repeatBtn.addEventListener('click', toggleRepeat);
 shuffleBtn.addEventListener('click', toggleShuffle);
 togglePlaylistBtn.addEventListener('click', togglePlaylist);
 themeToggle.addEventListener('click', cyclePlayerTheme);
-themeToggle.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); cyclePlayerTheme(); }
-});
 closePlaylistBtn.addEventListener('click', closePlaylist);
 playlistBackdrop.addEventListener('click', closePlaylist);
 playlistSearch.addEventListener('input', renderPlaylist);
