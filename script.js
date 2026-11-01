@@ -208,6 +208,63 @@ const songs = [
     }
 ];
 
+
+/* Live album artwork: iTunes Search API with browser-side cache. */
+const artworkCacheKey = 'musicplayer-artwork-cache-v1';
+const artworkFallback = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+ '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#202b3c"/><stop offset="1" stop-color="#090d16"/></linearGradient></defs><rect width="600" height="600" fill="url(#g)"/><circle cx="300" cy="300" r="155" fill="none" stroke="#71839c" stroke-opacity=".35" stroke-width="3"/><circle cx="300" cy="300" r="8" fill="#71839c" fill-opacity=".55"/><path d="M300 110v380M110 300h380" stroke="#71839c" stroke-opacity=".18" stroke-width="2"/></svg>'
+);
+let artworkRequestId = 0;
+let artworkCache = {};
+try { artworkCache = JSON.parse(localStorage.getItem(artworkCacheKey) || '{}') || {}; }
+catch (error) { artworkCache = {}; }
+
+function normalizeArtworkText(value) {
+ return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+function artworkMatchScore(track, result) {
+ const wantedTitle = normalizeArtworkText(track.title);
+ const foundTitle = normalizeArtworkText(result.trackName || result.collectionName);
+ const wantedArtist = normalizeArtworkText(track.artist);
+ const foundArtist = normalizeArtworkText(result.artistName);
+ const titleMatch = foundTitle === wantedTitle || foundTitle.includes(wantedTitle) || wantedTitle.includes(foundTitle);
+ const artistMatch = foundArtist === wantedArtist || foundArtist.includes(wantedArtist) || wantedArtist.includes(foundArtist);
+ if (!titleMatch || !artistMatch) return 0;
+ return (foundTitle === wantedTitle ? 0.6 : 0.42) + (foundArtist === wantedArtist ? 0.4 : 0.28);
+}
+function saveArtworkCache() {
+ try { localStorage.setItem(artworkCacheKey, JSON.stringify(artworkCache)); }
+ catch (error) { /* Pri nedostupnom úložisku sa obrázky načítajú pri ďalšom otvorení znova. */ }
+}
+async function loadLiveArtwork(track) {
+ const requestId = ++artworkRequestId;
+ const cacheKey = normalizeArtworkText(track.artist + '|' + track.title);
+ const cached = artworkCache[cacheKey];
+ if (cached && cached.expires > Date.now()) { cover.src = cached.url || artworkFallback; return; }
+ cover.src = artworkFallback;
+ try {
+  const url = 'https://itunes.apple.com/search?term=' + encodeURIComponent(track.artist + ' ' + track.title) + '&entity=song&limit=15&media=music';
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('iTunes API HTTP ' + response.status);
+  const data = await response.json();
+  const matches = (data.results || []).map(item => ({ item, score: artworkMatchScore(track, item) })).sort((a,b) => b.score-a.score);
+  const best = matches[0];
+  const artwork = best && best.score >= 0.7 ? (best.item.artworkUrl600 || best.item.artworkUrl100 || '') : '';
+  const imageUrl = artwork.replace(/\d+x\d+bb/, '600x600bb');
+  if (requestId !== artworkRequestId) return;
+  artworkCache[cacheKey] = { url: imageUrl, expires: Date.now() + (imageUrl ? 30 : 1) * 24 * 60 * 60 * 1000 };
+  saveArtworkCache();
+  cover.src = imageUrl || artworkFallback;
+ } catch (error) {
+  if (requestId !== artworkRequestId) return;
+  artworkCache[cacheKey] = { url: '', expires: Date.now() + 60 * 60 * 1000 };
+  saveArtworkCache();
+  cover.src = artworkFallback;
+  console.warn('Obal albumu sa nepodarilo načítať:', error);
+ }
+}
+
 let songIndex = 0;
 let isPlaying = false;
 let isRepeating = false;
@@ -244,11 +301,7 @@ function loadSong(song) {
     audio.src = `hudba/${song.name}.mp3`;
     audio.load();
 
-    cover.onerror = () => {
-        cover.onerror = null;
-        cover.src = 'obrazky/f1 album.jpg';
-    };
-    cover.src = `obrazky/${song.cover}`;
+    loadLiveArtwork(song);
 
     progress.style.width = '0%';
     currentTimeEl.textContent = '0:00';
