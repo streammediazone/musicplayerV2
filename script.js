@@ -201,10 +201,35 @@ const songs = [
     //     cover: 'cover3.jpg'
     // },
     {
-        title: 'Dracula',
+        title: 'Dracula (JENNIE Remix)',
         artist: 'Tame Impala',
-        name: 'Tame Impala - Dracula',
+        name: 'Tame Impala - Dracula (JENNIE Remix)',
         cover: 'f1 album.jpg'
+    },
+    {
+        title: 'Get Back (ASAP)',
+        artist: 'Alexandra Stan',
+        name: 'Alexandra Stan - Get Back (ASAP)'
+    },
+    {
+        title: 'Mr. Saxobeat',
+        artist: 'Alexandra Stan',
+        name: 'Alexandra Stan - Mr. Saxobeat'
+    },
+    {
+        title: 'If We Ever Meet Again',
+        artist: 'Timbaland',
+        name: 'Timbaland - If We Ever Meet Again'
+    },
+    {
+        title: 'Morning After Dark',
+        artist: 'Timbaland',
+        name: 'Timbaland - Morning After Dark'
+    },
+    {
+        title: 'The Way I Are',
+        artist: 'Timbaland',
+        name: 'Timbaland - The Way I Are'
     }
 ];
 
