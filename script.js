@@ -262,7 +262,7 @@ function setPlayingState(playing) {
     playBtn.classList.toggle('fa-play', !playing);
     playBtn.classList.toggle('fa-pause', playing);
     playerContainer.classList.toggle('playing', playing);
-    document.querySelector('.song-image').classList.toggle('pulsing', playing);
+    document.querySelector('.song-image').classList.toggle('pulsing', playing && activeSkinId === 'neon-cyber');
     playBtn.title = playing ? 'Pozastaviť' : 'Prehrať';
     if (playlistContainer.classList.contains('show')) updateActiveSongInPlaylist();
 }
