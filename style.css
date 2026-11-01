@@ -1738,3 +1738,64 @@ body {
 @media (max-width:760px) {
   :root[data-skin="neon-cyber"] .player-container {padding:28px 18px 20px!important;}
 }
+
+
+/* Neon Cyber: irregular segmented chassis frame, unlike Prism's clean editorial box. */
+:root[data-skin="neon-cyber"] .player-container {
+  border:0!important;
+  border-radius:0!important;
+  clip-path:polygon(0 7%,7% 7%,7% 0,93% 0,93% 5%,100% 5%,100% 91%,94% 91%,94% 100%,4% 100%,4% 94%,0 94%)!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 0 14px var(--neon-glow)) drop-shadow(12px 14px 0 rgba(0,0,0,.5));
+}
+:root[data-skin="neon-cyber"] .player-container::before {
+  inset:0!important;
+  border:0!important;
+  clip-path:polygon(0 7%,7% 7%,7% 0,93% 0,93% 5%,100% 5%,100% 91%,94% 91%,94% 100%,4% 100%,4% 94%,0 94%)!important;
+  background:
+    linear-gradient(var(--neon-primary),var(--neon-primary)) 0 7%/7% 2px no-repeat,
+    linear-gradient(var(--neon-primary),var(--neon-primary)) 7% 0/2px 7% no-repeat,
+    linear-gradient(var(--neon-secondary),var(--neon-secondary)) 93% 0/2px 5% no-repeat,
+    linear-gradient(var(--neon-secondary),var(--neon-secondary)) 93% 5%/7% 2px no-repeat,
+    linear-gradient(var(--neon-primary),var(--neon-primary)) 100% 5%/2px 86% no-repeat,
+    linear-gradient(var(--neon-secondary),var(--neon-secondary)) 94% 91%/6% 2px no-repeat,
+    linear-gradient(var(--neon-secondary),var(--neon-secondary)) 94% 91%/2px 9% no-repeat,
+    linear-gradient(var(--neon-primary),var(--neon-primary)) 4% 100%/90% 2px no-repeat,
+    linear-gradient(var(--neon-secondary),var(--neon-secondary)) 4% 94%/2px 6% no-repeat,
+    linear-gradient(var(--neon-primary),var(--neon-primary)) 0 7%/2px 87% no-repeat;
+  pointer-events:none;
+}
+:root[data-skin="neon-cyber"] .player-container::after {
+  top:12px!important;left:12%!important;right:12%!important;height:2px!important;
+  background:repeating-linear-gradient(90deg,var(--neon-primary) 0 28px,transparent 28px 36px,var(--neon-secondary) 36px 42px,transparent 42px 52px)!important;
+  clip-path:polygon(0 0,100% 0,96% 100%,4% 100%)!important;
+}
+:root[data-skin="neon-cyber"] .song-image {
+  clip-path:polygon(0 8%,8% 8%,8% 0,92% 0,92% 8%,100% 8%,100% 92%,92% 92%,92% 100%,8% 100%,8% 92%,0 92%)!important;
+  border:0!important;
+  padding:10px!important;
+  background:
+    linear-gradient(var(--neon-primary),var(--neon-primary)) 0 8%/8% 2px no-repeat,
+    linear-gradient(var(--neon-primary),var(--neon-primary)) 8% 0/2px 8% no-repeat,
+    linear-gradient(var(--neon-secondary),var(--neon-secondary)) 92% 0/2px 8% no-repeat,
+    linear-gradient(var(--neon-secondary),var(--neon-secondary)) 92% 8%/8% 2px no-repeat,
+    linear-gradient(var(--neon-primary),var(--neon-primary)) 100% 8%/2px 84% no-repeat,
+    linear-gradient(var(--neon-secondary),var(--neon-secondary)) 92% 92%/8% 2px no-repeat,
+    linear-gradient(var(--neon-secondary),var(--neon-secondary)) 92% 92%/2px 8% no-repeat,
+    linear-gradient(var(--neon-primary),var(--neon-primary)) 8% 100%/84% 2px no-repeat,
+    linear-gradient(var(--neon-secondary),var(--neon-secondary)) 8% 92%/2px 8% no-repeat,
+    linear-gradient(var(--neon-primary),var(--neon-primary)) 0 8%/2px 84% no-repeat,
+    #050812!important;
+  box-shadow:0 0 22px var(--neon-glow)!important;
+}
+:root[data-skin="neon-cyber"] .song-image img {
+  clip-path:polygon(0 0,100% 0,100% 100%,0 100%)!important;
+}
+:root[data-skin="neon-cyber"] .playlist-container {
+  border:0!important;
+  border-radius:0!important;
+  clip-path:polygon(0 0,96% 0,100% 5%,100% 100%,4% 100%,0 95%)!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 0 12px var(--neon-glow)) drop-shadow(8px 9px 0 rgba(0,0,0,.4));
+  outline:1px solid color-mix(in srgb,var(--neon-primary) 55%,transparent);
+}
