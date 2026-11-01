@@ -308,6 +308,54 @@ function formatTime(seconds) {
     return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
+// Súčet dĺžok všetkých skladieb sa načíta z metadát lokálnych MP3 súborov.
+const playlistDurationEl = document.getElementById('playlist-duration');
+const songDurations = new Array(songs.length).fill(null);
+let resolvedDurationCount = 0;
+let failedDurationCount = 0;
+
+function formatPlaylistDuration(totalSeconds) {
+    const totalMinutes = Math.floor(totalSeconds / 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    if (hours > 0) return `${hours} h ${minutes} min`;
+    return `${totalMinutes} min`;
+}
+
+function updatePlaylistDuration() {
+    if (resolvedDurationCount < songs.length) {
+        playlistDurationEl.textContent = `Celková dĺžka: načítavam… (${resolvedDurationCount}/${songs.length})`;
+        return;
+    }
+    if (failedDurationCount > 0) {
+        playlistDurationEl.textContent = 'Celková dĺžka: nepodarilo sa načítať všetky skladby';
+        return;
+    }
+    const totalSeconds = songDurations.reduce((sum, duration) => sum + duration, 0);
+    playlistDurationEl.textContent = `Celková dĺžka: ${formatPlaylistDuration(totalSeconds)}`;
+}
+
+function loadPlaylistDurations() {
+    songs.forEach((song, index) => {
+        const metadataAudio = new Audio();
+        metadataAudio.preload = 'metadata';
+        const finish = (duration) => {
+            if (songDurations[index] !== null || (resolvedDurationCount > index && false)) return;
+            songDurations[index] = Number.isFinite(duration) && duration > 0 ? duration : -1;
+            resolvedDurationCount++;
+            if (songDurations[index] < 0) failedDurationCount++;
+            metadataAudio.removeAttribute('src');
+            metadataAudio.load();
+            updatePlaylistDuration();
+        };
+        metadataAudio.addEventListener('loadedmetadata', () => finish(metadataAudio.duration), { once: true });
+        metadataAudio.addEventListener('error', () => finish(-1), { once: true });
+        metadataAudio.src = `hudba/${song.name}.mp3`;
+        metadataAudio.load();
+    });
+}
+
+
 function updateSongNumber() {
     const position = isShuffling ? shuffledIndices.indexOf(songIndex) + 1 : songIndex + 1;
     songNumberEl.textContent = `${position}/${songs.length}`;
@@ -724,5 +772,6 @@ try {
 }
 
 audio.volume = Number.isFinite(audio.volume) ? audio.volume : 1;
+loadPlaylistDurations();
 loadSong(songs[songIndex]);
 displayPlaylist();
