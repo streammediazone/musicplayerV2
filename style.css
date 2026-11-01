@@ -1919,3 +1919,13 @@ body {
 .skin-option.selected .skin-option-check {
   color:var(--accent)!important;
 }
+
+
+/* Súhrnná dĺžka playlistu */
+.playlist-duration {
+    display: block;
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: .72rem;
+    line-height: 1.45;
+}
