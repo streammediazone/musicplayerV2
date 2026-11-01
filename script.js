@@ -212,8 +212,13 @@ const songs = [
 /* Live album artwork: iTunes Search API with browser-side cache. */
 const artworkCacheKey = 'musicplayer-artwork-cache-v1';
 const artworkFallback = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
- '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#202b3c"/><stop offset="1" stop-color="#090d16"/></linearGradient></defs><rect width="600" height="600" fill="url(#g)"/><circle cx="300" cy="300" r="155" fill="none" stroke="#71839c" stroke-opacity=".35" stroke-width="3"/><circle cx="300" cy="300" r="8" fill="#71839c" fill-opacity=".55"/><path d="M300 110v380M110 300h380" stroke="#71839c" stroke-opacity=".18" stroke-width="2"/></svg>'
+ '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600"><defs><radialGradient id="bg" cx="50%" cy="38%" r="78%"><stop offset="0" stop-color="#eeeeef"/><stop offset=".58" stop-color="#c9c9cb"/><stop offset="1" stop-color="#929296"/></radialGradient></defs><rect width="600" height="600" fill="url(#bg)"/><g fill="#242424"><path d="M240 198 401 148 401 207 260 252 260 438 223 451 223 244 240 239Z"/><path d="M401 148 401 385 380 393 380 154Z"/><ellipse cx="190" cy="434" rx="57" ry="46" transform="rotate(-24 190 434)"/><ellipse cx="335" cy="390" rx="57" ry="46" transform="rotate(-24 335 390)"/></g></svg>'
 );
+// Ak sa nájdený vzdialený obrázok nedá načítať, zobrazí sa univerzálny NOTU symbol.
+cover.addEventListener('error', () => {
+ if (cover.src !== artworkFallback) cover.src = artworkFallback;
+});
+
 let artworkRequestId = 0;
 let artworkCache = {};
 try { artworkCache = JSON.parse(localStorage.getItem(artworkCacheKey) || '{}') || {}; }
