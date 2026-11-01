@@ -340,7 +340,7 @@ function loadPlaylistDurations() {
         const metadataAudio = new Audio();
         metadataAudio.preload = 'metadata';
         const finish = (duration) => {
-            if (songDurations[index] !== null || (resolvedDurationCount > index && false)) return;
+            if (songDurations[index] !== null) return;
             songDurations[index] = Number.isFinite(duration) && duration > 0 ? duration : -1;
             resolvedDurationCount++;
             if (songDurations[index] < 0) failedDurationCount++;
