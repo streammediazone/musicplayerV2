@@ -1901,3 +1901,21 @@ body {
 @media (prefers-reduced-motion:reduce) {
   :root[data-skin="neon-cyber"] .song-image {animation:none!important;}
 }
+
+
+/* Design picker: name-only cards with larger, uncluttered labels. */
+.skin-option-copy { justify-content:center!important; }
+.skin-option-copy strong {
+  font-size:1rem!important;
+  line-height:1.25!important;
+  font-weight:700!important;
+}
+.skin-option-check { display:none!important; }
+.skin-option.selected .skin-option-check { display:block!important; }
+.skin-option.selected {
+  border-color:var(--accent)!important;
+  background:var(--accent-soft)!important;
+}
+.skin-option.selected .skin-option-check {
+  color:var(--accent)!important;
+}
